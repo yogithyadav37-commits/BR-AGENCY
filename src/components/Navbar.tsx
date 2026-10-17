@@ -11,13 +11,16 @@ import {
   ShieldCheck, 
   AlertTriangle,
   TrendingUp,
-  Receipt
+  Receipt,
+  User,
+  Phone,
+  Package
 } from 'lucide-react';
-import { UserRole } from '../types/ink';
+import { UserRole, CustomerProfile } from '../types/ink';
 
 interface NavbarProps {
-  activeTab: 'order' | 'request_stock' | 'tracking' | 'invoices' | 'tds' | 'stock' | 'operations' | 'monthly_sales';
-  onSelectTab: (tab: 'order' | 'request_stock' | 'tracking' | 'invoices' | 'tds' | 'stock' | 'operations' | 'monthly_sales') => void;
+  activeTab: 'order' | 'request_stock' | 'tracking' | 'invoices' | 'tds' | 'stock' | 'operations' | 'monthly_sales' | 'customer_portal';
+  onSelectTab: (tab: 'order' | 'request_stock' | 'tracking' | 'invoices' | 'tds' | 'stock' | 'operations' | 'monthly_sales' | 'customer_portal') => void;
   onOpenNewOrder: () => void;
   onOpenPriceSettings: () => void;
   activeOrderCount: number;
@@ -27,6 +30,9 @@ interface NavbarProps {
   onSwitchToCustomer: () => void;
   pendingRequestsCount?: number;
   lowStockCount?: number;
+  activeCustomer?: CustomerProfile | null;
+  onOpenCustomerAuth: () => void;
+  onSignOutCustomer: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -41,6 +47,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSwitchToCustomer,
   pendingRequestsCount = 0,
   lowStockCount = 0,
+  activeCustomer = null,
+  onOpenCustomerAuth,
+  onSignOutCustomer,
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
@@ -92,6 +101,26 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               Order Inks
+            </button>
+
+            {/* Customer Orders & Invoices Portal */}
+            <button
+              onClick={() => {
+                if (activeCustomer) {
+                  onSelectTab('customer_portal');
+                } else {
+                  onOpenCustomerAuth();
+                }
+              }}
+              className={`hover:text-slate-900 transition-colors whitespace-nowrap shrink-0 pb-0.5 border-b-2 flex items-center gap-1.5 ${
+                activeTab === 'customer_portal'
+                  ? 'border-slate-900 text-slate-900 font-semibold'
+                  : 'border-transparent'
+              }`}
+              title="Customer Self-Service: My Orders, GST Invoices & Delivery Plants"
+            >
+              <Package className="w-3.5 h-3.5 text-cyan-600" />
+              <span>{activeCustomer ? 'My Orders & Invoices' : 'Customer Portal'}</span>
             </button>
 
             {/* 2. Request Stock (Customer + Owner) */}
@@ -216,8 +245,44 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </nav>
 
-          {/* Zone 3: Actions - Role Switcher & Pricing & New Order */}
+          {/* Zone 3: Actions - Customer Profile, Role Switcher, Pricing & New Order */}
           <div className="flex items-center gap-2 shrink-0">
+            {/* Customer Account Button */}
+            {activeCustomer ? (
+              <div className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200/70 border border-slate-300/80 rounded-lg p-0.5 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => onSelectTab('customer_portal')}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold text-slate-800 hover:text-cyan-700 transition-colors cursor-pointer max-w-[150px] truncate"
+                  title={`Signed in as ${activeCustomer.companyName} (${activeCustomer.phone}). Click to view orders & invoices.`}
+                >
+                  <div className="w-5 h-5 rounded-md bg-slate-900 text-cyan-400 flex items-center justify-center text-[10px] font-black shrink-0">
+                    {activeCustomer.companyName.charAt(0)}
+                  </div>
+                  <span className="truncate">{activeCustomer.companyName.split(' ')[0]}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={onSignOutCustomer}
+                  className="p-1 text-slate-400 hover:text-rose-600 rounded-md transition-colors"
+                  title="Sign out of customer account"
+                  aria-label="Sign out"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={onOpenCustomerAuth}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-cyan-800 bg-cyan-50 hover:bg-cyan-100 border border-cyan-200 rounded-lg transition-colors whitespace-nowrap shrink-0 shadow-2xs cursor-pointer"
+                title="Sign in with mobile OTP to access your orders and tax invoices"
+              >
+                <Phone className="w-3.5 h-3.5 text-cyan-600" />
+                <span>Customer Sign In</span>
+              </button>
+            )}
+
             {/* Role Switcher Button */}
             {userRole === 'customer' ? (
               <button

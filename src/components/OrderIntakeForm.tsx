@@ -72,6 +72,10 @@ interface OrderIntakeFormProps {
   orders?: Order[];
   onSubmitFeedback?: (orderId: string, feedback: OrderFeedback) => void;
   onDeliverOrder?: (orderId: string) => void;
+  activeCustomer?: CustomerProfile | null;
+  onOpenCustomerAuth?: () => void;
+  preloadedReorder?: { seriesId: InkSeriesId; items: OrderItem[] } | null;
+  onClearPreloadedReorder?: () => void;
 }
 
 interface ColorAllocation {
@@ -92,6 +96,10 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
   orders = [],
   onSubmitFeedback,
   onDeliverOrder,
+  activeCustomer = null,
+  onOpenCustomerAuth,
+  preloadedReorder = null,
+  onClearPreloadedReorder,
 }) => {
   // Feedback modal state
   const [feedbackOrder, setFeedbackOrder] = useState<Order | null>(null);
@@ -169,6 +177,50 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
   const updateDeliveryAddress = (field: keyof DeliveryAddress, val: string) => {
     setDeliveryAddress(prev => ({ ...prev, [field]: val }));
   };
+
+  // Sync activeCustomer with form delivery address and press model
+  React.useEffect(() => {
+    if (activeCustomer) {
+      if (activeCustomer.deliveryAddress) {
+        setDeliveryAddress(activeCustomer.deliveryAddress);
+      }
+      if (activeCustomer.pressModel) {
+        setPressModel(activeCustomer.pressModel);
+      }
+    }
+  }, [activeCustomer]);
+
+  // Handle preloaded re-order batch into form
+  React.useEffect(() => {
+    if (preloadedReorder) {
+      if (preloadedReorder.seriesId) {
+        setSelectedSeries(preloadedReorder.seriesId);
+      }
+      if (preloadedReorder.items && preloadedReorder.items.length > 0) {
+        setAllocations(prev => {
+          const next = { ...prev };
+          (Object.keys(next) as InkColorCode[]).forEach(c => {
+            const match = preloadedReorder.items.find(it => it.color === c);
+            if (match) {
+              next[c] = {
+                color: c,
+                selected: true,
+                containerId: match.containerId,
+                containersCount: match.containersCount
+              };
+            } else {
+              next[c] = {
+                ...next[c],
+                selected: false
+              };
+            }
+          });
+          return next;
+        });
+      }
+      onClearPreloadedReorder?.();
+    }
+  }, [preloadedReorder, onClearPreloadedReorder]);
 
   const handleSelectCustomer = (id: string) => {
     setSelectedCustomerId(id);
@@ -538,10 +590,12 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
 
   const totalAmount = Number((discountedSubtotal + taxAmount + shippingFee).toFixed(2));
 
-  // Determine Customer
-  const effectiveCustomer: CustomerProfile = selectedCustomerMode === 'existing'
-    ? (SAMPLE_CUSTOMERS.find(c => c.id === selectedCustomerId) || SAMPLE_CUSTOMERS[0])
-    : customCustomer;
+  // Determine Customer (Prefer active authenticated customer session)
+  const effectiveCustomer: CustomerProfile = activeCustomer
+    ? activeCustomer
+    : (selectedCustomerMode === 'existing'
+      ? (SAMPLE_CUSTOMERS.find(c => c.id === selectedCustomerId) || SAMPLE_CUSTOMERS[0])
+      : customCustomer);
 
   // Handle Form Submission
   const handleSubmit = (e: React.FormEvent) => {
@@ -1709,7 +1763,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
 
           {/* Section 4: Customer Details */}
           <section className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
                 <span className="text-xs font-mono font-medium text-slate-400 uppercase tracking-wider">
                   04. Customer Account
@@ -1718,37 +1772,98 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                   Client Press &amp; Billing Entity
                 </h2>
               </div>
-              <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg text-xs">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedCustomerMode('existing');
-                    handleSelectCustomer(selectedCustomerId);
-                  }}
-                  className={`px-3 py-1 font-medium rounded-md transition-colors ${
-                    selectedCustomerMode === 'existing'
-                      ? 'bg-white text-slate-900 shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  Saved Accounts
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCustomerMode('new')}
-                  className={`px-3 py-1 font-medium rounded-md transition-colors ${
-                    selectedCustomerMode === 'new'
-                      ? 'bg-white text-slate-900 shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  New Press Client
-                </button>
-              </div>
+
+              {!activeCustomer && (
+                <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg text-xs">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedCustomerMode('existing');
+                      handleSelectCustomer(selectedCustomerId);
+                    }}
+                    className={`px-3 py-1 font-medium rounded-md transition-colors ${
+                      selectedCustomerMode === 'existing'
+                        ? 'bg-white text-slate-900 shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    Saved Accounts
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCustomerMode('new')}
+                    className={`px-3 py-1 font-medium rounded-md transition-colors ${
+                      selectedCustomerMode === 'new'
+                        ? 'bg-white text-slate-900 shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    New Press Client
+                  </button>
+                </div>
+              )}
             </div>
 
-            {selectedCustomerMode === 'existing' ? (
-              <div className="space-y-3">
+            {/* If Customer is Authenticated, Display Verified Press Card */}
+            {activeCustomer ? (
+              <div className="p-4 bg-cyan-50/70 border border-cyan-200 rounded-xl space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-slate-900 text-cyan-400 font-extrabold flex items-center justify-center text-sm shadow-xs">
+                      {activeCustomer.companyName.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-slate-900">
+                        {activeCustomer.companyName}
+                      </p>
+                      <p className="text-xs text-slate-600">
+                        {activeCustomer.contactPerson} · <span className="font-mono">{activeCustomer.phone}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 self-start sm:self-auto">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Verified Press Account</span>
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-cyan-200/80 text-xs text-slate-700">
+                  <div>
+                    <span className="text-[11px] text-slate-400 block">GSTIN Number</span>
+                    <strong className="font-mono text-slate-900">{activeCustomer.gstNumber || 'Unregistered'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[11px] text-slate-400 block">Receiving Dock</span>
+                    <strong className="text-slate-900">{deliveryAddress.plantOrUnitName || 'Central Pressroom'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[11px] text-slate-400 block">Billing Terms</span>
+                    <strong className="text-slate-900">{activeCustomer.paymentTerms || 'Net 30 Days'}</strong>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* If Guest, Show Sign In Banner */
+              onOpenCustomerAuth && (
+                <div className="mb-4 p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="text-xs text-slate-600">
+                    <strong className="text-slate-900 block">Have a registered print shop account?</strong>
+                    <span>Sign in with mobile OTP to auto-fill delivery docks and automatically link this order to your history.</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={onOpenCustomerAuth}
+                    className="px-3.5 py-1.5 text-xs font-bold text-cyan-800 bg-cyan-100 hover:bg-cyan-200 border border-cyan-300 rounded-lg transition-colors whitespace-nowrap cursor-pointer shrink-0"
+                  >
+                    Customer Sign In
+                  </button>
+                </div>
+              )
+            )}
+
+            {!activeCustomer && (
+              selectedCustomerMode === 'existing' ? (
+                <div className="space-y-3">
                 <label className="block text-xs font-semibold text-slate-700">
                   Select Registered Printing House
                 </label>
@@ -1880,7 +1995,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                   />
                 </div>
               </div>
-            )}
+            ))}
           </section>
 
           {/* Section 5: Orderer Delivery & Receiving Dock Address */}

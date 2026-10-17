@@ -15,6 +15,9 @@ import { RequestStockView } from './components/RequestStockView';
 import { OwnerAuthModal } from './components/OwnerAuthModal';
 import { PriceSettingsModal } from './components/PriceSettingsModal';
 import { MonthlySalesView } from './components/MonthlySalesView';
+import { CustomerAuthModal } from './components/CustomerAuthModal';
+import { CustomerPortalView } from './components/CustomerPortalView';
+import { Phone } from 'lucide-react';
 import { 
   INITIAL_ORDERS, 
   INITIAL_INVOICES, 
@@ -35,13 +38,15 @@ import {
   StockRequest,
   UserRole,
   DeliveryRoutingDetails,
-  OrderFeedback 
+  OrderFeedback,
+  CustomerProfile,
+  OrderItem
 } from './types/ink';
 
 export default function App() {
   // Navigation Tab
   const [activeTab, setActiveTab] = useState<
-    'order' | 'request_stock' | 'tracking' | 'invoices' | 'tds' | 'stock' | 'operations' | 'monthly_sales'
+    'order' | 'request_stock' | 'tracking' | 'invoices' | 'tds' | 'stock' | 'operations' | 'monthly_sales' | 'customer_portal'
   >('order');
 
   // Role Control (Default: customer, so clients see the clean ordering experience)
@@ -71,6 +76,30 @@ export default function App() {
 
   // Price Settings Modal State
   const [isPriceSettingsOpen, setIsPriceSettingsOpen] = useState(false);
+
+  // Customer Auth & Persistent Device Session
+  const [customers, setCustomers] = useState<CustomerProfile[]>(() => {
+    try {
+      const saved = localStorage.getItem('bragency_registered_customers');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error(e);
+    }
+    return SAMPLE_CUSTOMERS;
+  });
+
+  const [activeCustomer, setActiveCustomer] = useState<CustomerProfile | null>(() => {
+    try {
+      const saved = localStorage.getItem('bragency_customer_session');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error(e);
+    }
+    return null;
+  });
+
+  const [isCustomerAuthOpen, setIsCustomerAuthOpen] = useState(false);
+  const [preloadedReorder, setPreloadedReorder] = useState<{ seriesId: InkSeriesId; items: OrderItem[] } | null>(null);
 
   // Persistence: Pricing Configuration (BR Agency Rate Card in INR)
   const [pricingConfig, setPricingConfig] = useState<PricingConfig>(() => {
@@ -220,6 +249,55 @@ export default function App() {
       console.error('Failed to save invoices', e);
     }
   }, [invoices]);
+
+  // Sync Customer Session & Registered Press Directory
+  useEffect(() => {
+    try {
+      if (activeCustomer) {
+        localStorage.setItem('bragency_customer_session', JSON.stringify(activeCustomer));
+      } else {
+        localStorage.removeItem('bragency_customer_session');
+      }
+    } catch (e) {
+      console.error('Failed to sync customer session', e);
+    }
+  }, [activeCustomer]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('bragency_registered_customers', JSON.stringify(customers));
+    } catch (e) {
+      console.error('Failed to sync customers list', e);
+    }
+  }, [customers]);
+
+  // Customer Auth Handlers
+  const handleLoginCustomer = (customer: CustomerProfile) => {
+    setActiveCustomer(customer);
+    setActiveTab('customer_portal');
+  };
+
+  const handleSignOutCustomer = () => {
+    setActiveCustomer(null);
+    if (activeTab === 'customer_portal') {
+      setActiveTab('order');
+    }
+  };
+
+  const handleRegisterCustomer = (newCustomer: CustomerProfile) => {
+    setCustomers(prev => {
+      const exists = prev.some(c => c.id === newCustomer.id);
+      return exists ? prev : [newCustomer, ...prev];
+    });
+  };
+
+  const handleReorderItems = (items: OrderItem[], seriesId?: string) => {
+    setPreloadedReorder({
+      seriesId: (seriesId as InkSeriesId) || 'BIO_SPEED',
+      items
+    });
+    setActiveTab('order');
+  };
 
   // Handler: Save Pricing Configuration (Owner only)
   const handleSavePricing = (newPricing: PricingConfig) => {
@@ -622,10 +700,49 @@ export default function App() {
         onSwitchToCustomer={handleSwitchToCustomer}
         pendingRequestsCount={pendingRequestsCount}
         lowStockCount={lowStockCount}
+        activeCustomer={activeCustomer}
+        onOpenCustomerAuth={() => setIsCustomerAuthOpen(true)}
+        onSignOutCustomer={handleSignOutCustomer}
       />
 
       {/* Main Content Workspace */}
       <main className="flex-1">
+        {/* Customer Self-Service Portal (Orders, Invoices, Delivery Addresses) */}
+        {activeTab === 'customer_portal' && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {activeCustomer ? (
+              <CustomerPortalView
+                customer={activeCustomer}
+                orders={orders}
+                invoices={invoices}
+                onSignOut={handleSignOutCustomer}
+                onNavigateToNewOrder={() => setActiveTab('order')}
+                onReorderItems={handleReorderItems}
+                onNavigateToTracking={handleNavigateToTracking}
+              />
+            ) : (
+              <div className="bg-white border border-slate-200 rounded-2xl p-8 max-w-md mx-auto text-center space-y-4 shadow-xs my-12">
+                <div className="w-12 h-12 rounded-full bg-cyan-100 text-cyan-800 flex items-center justify-center mx-auto">
+                  <Phone className="w-6 h-6 text-cyan-600" />
+                </div>
+                <h2 className="text-lg font-bold text-slate-900">
+                  Customer Sign In Required
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Please sign in with your mobile phone number to access your past orders, GST tax invoices, and delivery plant specifications.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setIsCustomerAuthOpen(true)}
+                  className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl shadow-xs transition-colors cursor-pointer"
+                >
+                  Sign In with Mobile OTP
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* 1. Customer Order Intake Portal (Capped strictly to available warehouse stock) */}
         {activeTab === 'order' && (
           <OrderIntakeForm
@@ -645,6 +762,10 @@ export default function App() {
             orders={orders}
             onSubmitFeedback={handleSubmitFeedback}
             onDeliverOrder={handleDeliverOrder}
+            activeCustomer={activeCustomer}
+            onOpenCustomerAuth={() => setIsCustomerAuthOpen(true)}
+            preloadedReorder={preloadedReorder}
+            onClearPreloadedReorder={() => setPreloadedReorder(null)}
           />
         )}
 
@@ -739,6 +860,15 @@ export default function App() {
           />
         )}
       </main>
+
+      {/* Customer Mobile Phone + OTP Authentication Modal */}
+      <CustomerAuthModal
+        isOpen={isCustomerAuthOpen}
+        onClose={() => setIsCustomerAuthOpen(false)}
+        onLoginSuccess={handleLoginCustomer}
+        registeredCustomers={customers}
+        onRegisterCustomer={handleRegisterCustomer}
+      />
 
       {/* Owner Authentication Modal (PIN Protected) */}
       <OwnerAuthModal
