@@ -1,0 +1,6 @@
+{
+  "name": "BR Agency - Printing Press Ink Supplies",
+  "description": "B2B order intake with delivery address capture, real-time batch tracking, INR price configuration, and commercial tax invoices for BR Agency printing press inks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
