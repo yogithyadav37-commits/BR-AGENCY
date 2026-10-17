@@ -89,6 +89,10 @@ export interface CustomerProfile {
   pressModel: string;
   paymentTerms: 'Immediate' | 'Net 15' | 'Net 30' | 'COD';
   deliveryAddress?: DeliveryAddress;
+  password?: string;
+  accountCreatedAt?: string;
+  loyaltyTier?: 'Standard Press' | 'Silver Volume' | 'Gold Packaging Partner';
+  accountType?: 'Commercial Offset' | 'Packaging Cartons' | 'Publishing & Publication' | 'Label & Specialty';
 }
 
 export type OrderStatus = 
