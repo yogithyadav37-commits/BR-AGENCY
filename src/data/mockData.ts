@@ -149,31 +149,31 @@ export const INK_COLORS: InkColorSpec[] = [
 export const CONTAINER_OPTIONS: ContainerOption[] = [
   {
     id: 'box_2kg',
-    label: '2.0 kg Press Box (Minimum Size)',
+    label: '2.0 kg Box (Minimum Size)',
     shortLabel: '2.0 kg Box (Min)',
     kgPerUnit: 2.0,
-    description: 'Minimum packaging format: Handy 2.0 kg corrugated press box with airtight liner. Lightweight and easy to handle for startup print shops.',
-    recommendedFor: 'Startup litho runs, agile job changes & daily minimum presswork'
+    description: 'Minimum packaging format: Handy 2.0 kg corrugated box with airtight liner. Lightweight and easy to handle for agile production.',
+    recommendedFor: 'Startup companies, agile job changes & daily minimum production'
   },
   {
     id: 'can_2_5kg',
     label: '2.5 kg Vacuum Can',
     shortLabel: '2.5 kg Can',
     kgPerUnit: 2.5,
-    description: 'Standard pressroom vacuum-sealed steel can. Shipped 4 cans per master carton (10 kg).',
-    recommendedFor: 'Medium sheetfed jobs & standard daily press runs'
+    description: 'Standard vacuum-sealed steel can. Shipped 4 cans per master carton (10 kg).',
+    recommendedFor: 'Medium jobs & standard daily commercial production'
   },
   {
     id: 'box_5kg',
-    label: '5.0 kg Press Box',
+    label: '5.0 kg Box',
     shortLabel: '5.0 kg Box',
     kgPerUnit: 5.0,
-    description: 'Rigid 5.0 kg press box with inner barrier liner, ideal for growing production without heavy handling.',
+    description: 'Rigid 5.0 kg box with inner barrier liner, ideal for growing production without heavy handling.',
     recommendedFor: 'Continuous job batches, folding cartons & daily production'
   },
   {
     id: 'pail_15kg',
-    label: '15.0 kg Pressroom Pail',
+    label: '15.0 kg Industrial Pail',
     shortLabel: '15 kg Pail',
     kgPerUnit: 15.0,
     description: 'Industrial heavy-gauge steel pail with clamp ring lid and rubber airtight gasket.',
@@ -181,116 +181,7 @@ export const CONTAINER_OPTIONS: ContainerOption[] = [
   }
 ];
 
-export const SAMPLE_CUSTOMERS: CustomerProfile[] = [
-  {
-    id: 'CUST-001',
-    companyName: 'Apex Litho Printers Pvt. Ltd.',
-    contactPerson: 'Rajesh Sharma (Head of Press Operations)',
-    phone: '+91 98112 34890',
-    email: 'press@apexlitho.in',
-    gstNumber: '07AABCA8821D1ZQ',
-    address: 'Plot 44, Naraina Industrial Area Phase-II',
-    city: 'New Delhi',
-    state: 'Delhi',
-    postalCode: '110028',
-    pressModel: 'Heidelberg Speedmaster XL 106-6+L',
-    paymentTerms: 'Net 30',
-    deliveryAddress: {
-      plantOrUnitName: 'Apex Litho Unit 2 (Web Offset Division)',
-      streetAddress: 'Plot 44, Main Road, Naraina Industrial Area Phase-II',
-      landmark: 'Near Container Depot / Opposite Substation 4',
-      city: 'New Delhi',
-      state: 'Delhi',
-      postalCode: '110028',
-      dockContactPerson: 'Suresh Kumar (Receiving In-charge)',
-      dockContactPhone: '+91 98112 34891',
-      gateOrBayNumber: 'Gate 2 (Heavy Vehicle Dock)',
-      unloadingRequirements: 'Forklift on site for pails and drums. Delivery between 9 AM - 5 PM.',
-      deliveryTimeSlot: '10:00 AM - 05:00 PM'
-    }
-  },
-  {
-    id: 'CUST-002',
-    companyName: 'Horizon Packaging & Cartons Ltd.',
-    contactPerson: 'Senthil Nathan (Procurement Director)',
-    phone: '+91 94431 87244',
-    email: 'supply@horizonpackaging.co.in',
-    gstNumber: '33AAACH4920E1ZP',
-    address: '120 Satchiyapuram Road, Printing Cluster',
-    city: 'Sivakasi',
-    state: 'Tamil Nadu',
-    postalCode: '626123',
-    pressModel: 'Komori Lithrone GL-40 (6 Color UV/Conventional)',
-    paymentTerms: 'Net 30',
-    deliveryAddress: {
-      plantOrUnitName: 'Horizon Central Converting & Packaging Plant',
-      streetAddress: '120 Satchiyapuram Road, Industrial Printing Cluster',
-      landmark: 'Near Sivakasi Master Printers Association Bhavan',
-      city: 'Sivakasi',
-      state: 'Tamil Nadu',
-      postalCode: '626123',
-      dockContactPerson: 'P. Murugesan (Stores Officer)',
-      dockContactPhone: '+91 94431 87250',
-      gateOrBayNumber: 'Bay 3 - Raw Chemical Stores',
-      unloadingRequirements: 'Low-odor packaging cleanroom dock. Hydraulic pallet jack required.',
-      deliveryTimeSlot: '09:00 AM - 06:00 PM'
-    }
-  },
-  {
-    id: 'CUST-003',
-    companyName: 'Regent Fine Graphics & Publishing LLP',
-    contactPerson: 'Vikram Joshi (Plant Manager)',
-    phone: '+91 98201 34911',
-    email: 'plant@regentgraphics.in',
-    gstNumber: '27AABCR1029F1ZT',
-    address: 'Unit 8, Sun Mill Compound, Lower Parel West',
-    city: 'Mumbai',
-    state: 'Maharashtra',
-    postalCode: '400013',
-    pressModel: 'KBA Rapida 105-5',
-    paymentTerms: 'Net 15',
-    deliveryAddress: {
-      plantOrUnitName: 'Regent Print Operations & Litho Studio',
-      streetAddress: 'Unit 8, Sun Mill Compound, S.B. Marg, Lower Parel West',
-      landmark: 'Behind Phoenix Mills Complex',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      postalCode: '400013',
-      dockContactPerson: 'Ganesh Shinde (Pressroom Foreman)',
-      dockContactPhone: '+91 98201 34915',
-      gateOrBayNumber: 'Rear Service Dock A',
-      unloadingRequirements: 'Strict entry timing: No heavy trucks between 8 AM - 11 AM due to local traffic.',
-      deliveryTimeSlot: '12:00 PM - 04:00 PM'
-    }
-  },
-  {
-    id: 'CUST-004',
-    companyName: 'Sterling Food Carton & Labels Pvt. Ltd.',
-    contactPerson: 'Ananya Rao (Quality & Sourcing Lead)',
-    phone: '+91 99012 77890',
-    email: 'materials@sterlingcartons.in',
-    gstNumber: '29AABCS9938G1ZR',
-    address: 'Plot 35, 4th Phase, Peenya Industrial Area',
-    city: 'Bengaluru',
-    state: 'Karnataka',
-    postalCode: '560058',
-    pressModel: 'Manroland Roland 700 HiPrint',
-    paymentTerms: 'Immediate',
-    deliveryAddress: {
-      plantOrUnitName: 'Sterling High-Hygiene Food Carton Facility',
-      streetAddress: 'Plot 35, 4th Phase, Peenya Industrial Area',
-      landmark: 'Near Peenya Metro Station, Gate 2',
-      city: 'Bengaluru',
-      state: 'Karnataka',
-      postalCode: '560058',
-      dockContactPerson: 'Ramesh Gowda (Logistics Receiving)',
-      dockContactPhone: '+91 99012 77895',
-      gateOrBayNumber: 'Dock 4 (Clean Room Quarantine Bay)',
-      unloadingRequirements: 'MOSH/MOAH certificate copy must accompany dispatch consignment.',
-      deliveryTimeSlot: '08:30 AM - 05:30 PM'
-    }
-  }
-];
+export const SAMPLE_CUSTOMERS: CustomerProfile[] = [];
 
 // All orders and invoices start completely clean with 0 records
 export const INITIAL_ORDERS: Order[] = [];
@@ -363,7 +254,7 @@ export const INITIAL_STOCK_REQUESTS: StockRequest[] = [
     neededByDate: '2026-10-16',
     urgency: 'Urgent (Next 48 Hours)',
     status: 'pending',
-    notes: 'Starting high-volume export pharma carton job on Bobst 6-color press. Need 8 pails of 15kg urgently.',
+    notes: 'Starting high-volume export pharma carton job. Need 8 pails of 15kg urgently.',
   },
   {
     id: 'req_02',
@@ -372,9 +263,9 @@ export const INITIAL_STOCK_REQUESTS: StockRequest[] = [
     companyName: 'Saraswati Commercial Offset Printers',
     contactPerson: 'Rajesh Sharma',
     phone: '+91 98290 44102',
-    email: 'press@saraswatiprint.com',
+    email: 'accounts@saraswatiprint.com',
     city: 'Okhla Phase-2, New Delhi',
-    plantOrUnitName: 'Main Offset Press Hall',
+    plantOrUnitName: 'Main Production Hall',
     seriesId: 'BIO_SPEED',
     color: 'Black',
     requestedKg: 100,
@@ -382,7 +273,7 @@ export const INITIAL_STOCK_REQUESTS: StockRequest[] = [
     neededByDate: '2026-10-18',
     urgency: 'Normal (Standard Delivery)',
     status: 'in_formulation',
-    notes: '20 boxes of 5kg for litho press runs. Need batch analysis report for viscosity.',
+    notes: '20 boxes of 5kg for commercial production runs. Need batch analysis report for viscosity.',
     ownerResponse: 'Batch scheduled on 3-Roll Mill #2 for milling on 14th Oct.'
   }
 ];
@@ -393,7 +284,7 @@ export const SAMPLE_CUSTOMER_REVIEWS: OrderFeedback[] = [
     orderId: 'sample_ord_01',
     orderNumber: 'ORD-2026-7840',
     customerName: 'Suresh Kumar',
-    companyName: 'Apex Litho Press Pvt. Ltd.',
+    companyName: 'Apex Packaging Industries Pvt. Ltd.',
     rating: 5,
     subRatings: {
       inkQuality: 5,
@@ -406,7 +297,7 @@ export const SAMPLE_CUSTOMER_REVIEWS: OrderFeedback[] = [
     submittedAt: '2026-10-12T14:30:00Z',
     pressModel: 'Heidelberg Speedmaster XL 106-6+L',
     ownerResponse: {
-      comment: 'Thank you Suresh! Glad our BIO SPEED pigment grind delivered the delta E precision you needed on the Heidelberg run.',
+      comment: 'Thank you Suresh! Glad our BIO SPEED pigment grind delivered the delta E precision you needed on your production run.',
       respondedAt: '2026-10-12T16:00:00Z'
     }
   },
@@ -442,7 +333,7 @@ export const SAMPLE_CUSTOMER_REVIEWS: OrderFeedback[] = [
       pressPerformance: 4
     },
     tags: ['Punctual Dock Delivery', 'Sharp Dot Reproduction', 'Responsive Logistics Partner'],
-    comment: 'We routed delivery via Borzo express courier and it arrived right into our Pressroom Bay 2 within 40 minutes. The black density (D > 2.05) on uncoated bond was outstanding.',
+    comment: 'We routed delivery via Borzo express courier and it arrived right into our Company Receiving Bay 2 within 40 minutes. The black density (D > 2.05) on uncoated bond was outstanding.',
     submittedAt: '2026-10-08T09:15:00Z',
     pressModel: 'KBA Rapida 105 / 106 PRO'
   }

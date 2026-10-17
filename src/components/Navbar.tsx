@@ -69,7 +69,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   BR AGENCY
                 </span>
                 <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                  Press Inks
+                  Company Inks
                 </span>
               </div>
             </div>
@@ -83,7 +83,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                  <span>Customer Ordering View</span>
+                  <span>Company Ordering View</span>
                 </span>
               )}
             </div>
@@ -117,10 +117,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   ? 'border-slate-900 text-slate-900 font-semibold'
                   : 'border-transparent'
               }`}
-              title="Customer Self-Service: My Orders, GST Invoices & Delivery Plants"
+              title="Company Self-Service: My Orders, GST Invoices & Delivery Facilities"
             >
               <Package className="w-3.5 h-3.5 text-cyan-600" />
-              <span>{activeCustomer ? 'My Orders & Invoices' : 'Customer Portal'}</span>
+              <span>{activeCustomer ? 'My Orders & Invoices' : 'Company Portal'}</span>
             </button>
 
             {/* 2. Request Stock (Customer + Owner) */}
@@ -265,7 +265,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   type="button"
                   onClick={onSignOutCustomer}
                   className="p-1 text-slate-400 hover:text-rose-600 rounded-md transition-colors"
-                  title="Sign out of customer account"
+                  title="Sign out of company account"
                   aria-label="Sign out"
                 >
                   <LogOut className="w-3.5 h-3.5" />
@@ -276,10 +276,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                 type="button"
                 onClick={onOpenCustomerAuth}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-cyan-800 bg-cyan-50 hover:bg-cyan-100 border border-cyan-200 rounded-lg transition-colors whitespace-nowrap shrink-0 shadow-2xs cursor-pointer"
-                title="Sign in with mobile OTP to access your orders and tax invoices"
+                title="Sign in with mobile OTP to access company orders and tax invoices"
               >
                 <Phone className="w-3.5 h-3.5 text-cyan-600" />
-                <span>Customer Sign In</span>
+                <span>Company Sign In</span>
               </button>
             )}
 

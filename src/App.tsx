@@ -77,21 +77,34 @@ export default function App() {
   // Price Settings Modal State
   const [isPriceSettingsOpen, setIsPriceSettingsOpen] = useState(false);
 
-  // Customer Auth & Persistent Device Session
+  // Customer Auth & Persistent Device Session (Starts clean with 0 demo accounts)
   const [customers, setCustomers] = useState<CustomerProfile[]>(() => {
     try {
       const saved = localStorage.getItem('bragency_registered_customers');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          // Filter out any legacy demo accounts
+          return parsed.filter(c => c.id !== 'CUST-001' && c.id !== 'CUST-002');
+        }
+      }
     } catch (e) {
       console.error(e);
     }
-    return SAMPLE_CUSTOMERS;
+    return [];
   });
 
   const [activeCustomer, setActiveCustomer] = useState<CustomerProfile | null>(() => {
     try {
       const saved = localStorage.getItem('bragency_customer_session');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed?.id === 'CUST-001' || parsed?.id === 'CUST-002') {
+          localStorage.removeItem('bragency_customer_session');
+          return null;
+        }
+        return parsed;
+      }
     } catch (e) {
       console.error(e);
     }
@@ -726,10 +739,10 @@ export default function App() {
                   <Phone className="w-6 h-6 text-cyan-600" />
                 </div>
                 <h2 className="text-lg font-bold text-slate-900">
-                  Customer Sign In Required
+                  Company Sign In Required
                 </h2>
                 <p className="text-xs text-slate-500">
-                  Please sign in with your mobile phone number to access your past orders, GST tax invoices, and delivery plant specifications.
+                  Please sign in with your company mobile phone number to access your past orders, GST tax invoices, and delivery facility specifications.
                 </p>
                 <button
                   type="button"
@@ -766,6 +779,7 @@ export default function App() {
             onOpenCustomerAuth={() => setIsCustomerAuthOpen(true)}
             preloadedReorder={preloadedReorder}
             onClearPreloadedReorder={() => setPreloadedReorder(null)}
+            registeredCompanies={customers}
           />
         )}
 

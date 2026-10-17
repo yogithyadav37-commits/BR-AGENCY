@@ -177,10 +177,10 @@ export const CustomerPortalView: React.FC<CustomerPortalViewProps> = ({
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2.5 text-xs text-slate-400">
               <span className="font-semibold text-cyan-400 uppercase tracking-wider">
-                Self-Service Press Portal
+                Self-Service Company Portal
               </span>
               <span aria-hidden="true">·</span>
-              <span>Customer ID: <strong className="font-mono text-slate-300">{customer.id}</strong></span>
+              <span>Company ID: <strong className="font-mono text-slate-300">{customer.id}</strong></span>
               <span aria-hidden="true">·</span>
               <span>GSTIN: <strong className="font-mono text-slate-300">{customer.gstNumber || 'Unregistered'}</strong></span>
             </div>
@@ -320,7 +320,7 @@ export const CustomerPortalView: React.FC<CustomerPortalViewProps> = ({
             }`}
           >
             <MapPin className="w-4 h-4 text-purple-600" />
-            <span>Plant Delivery Hub</span>
+            <span>Company Delivery Hub</span>
           </button>
         </div>
 
@@ -666,7 +666,7 @@ export const CustomerPortalView: React.FC<CustomerPortalViewProps> = ({
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-cyan-600" />
                 <h3 className="text-sm font-bold text-slate-900">
-                  Primary Pressroom Delivery Plant
+                  Primary Company Delivery Facility
                 </h3>
               </div>
               <span className="text-[11px] font-semibold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200">
@@ -676,7 +676,7 @@ export const CustomerPortalView: React.FC<CustomerPortalViewProps> = ({
 
             <div className="space-y-2 text-xs">
               <div>
-                <p className="text-[11px] text-slate-400 font-semibold uppercase">Plant / Unit Name</p>
+                <p className="text-[11px] text-slate-400 font-semibold uppercase">Company Facility / Plant Name</p>
                 <p className="font-bold text-slate-900 text-sm">
                   {customer.deliveryAddress?.plantOrUnitName || `${customer.companyName} Unit 1`}
                 </p>
@@ -728,18 +728,18 @@ export const CustomerPortalView: React.FC<CustomerPortalViewProps> = ({
             <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
               <Printer className="w-4 h-4 text-slate-600" />
               <h3 className="text-sm font-bold text-slate-900">
-                Pressroom Equipment &amp; Ink Specifications
+                Company Machinery &amp; Technical Specifications
               </h3>
             </div>
 
             <div className="space-y-3 text-xs">
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                <p className="text-[11px] text-slate-500 uppercase font-semibold">Primary Printing Machine</p>
+                <p className="text-[11px] text-slate-500 uppercase font-semibold">Primary Machinery</p>
                 <p className="text-sm font-bold text-slate-900 mt-0.5">
                   {customer.pressModel || 'Heidelberg Speedmaster XL 106-6+L'}
                 </p>
                 <p className="text-[11px] text-slate-500 mt-1">
-                  Optimized for BIO SPEED™ high-speed litho and BIO PACK™ low migration packaging formulations.
+                  Optimized for BIO SPEED™ sheetfed and BIO PACK™ low migration packaging formulations.
                 </p>
               </div>
 

@@ -76,6 +76,7 @@ interface OrderIntakeFormProps {
   onOpenCustomerAuth?: () => void;
   preloadedReorder?: { seriesId: InkSeriesId; items: OrderItem[] } | null;
   onClearPreloadedReorder?: () => void;
+  registeredCompanies?: CustomerProfile[];
 }
 
 interface ColorAllocation {
@@ -100,6 +101,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
   onOpenCustomerAuth,
   preloadedReorder = null,
   onClearPreloadedReorder,
+  registeredCompanies = [],
 }) => {
   // Feedback modal state
   const [feedbackOrder, setFeedbackOrder] = useState<Order | null>(null);
@@ -1761,7 +1763,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             </div>
           </section>
 
-          {/* Section 4: Customer Details */}
+          {/* Section 4: Customer Account */}
           <section className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
@@ -1769,7 +1771,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                   04. Customer Account
                 </span>
                 <h2 className="text-lg font-bold text-slate-900">
-                  Client Press &amp; Billing Entity
+                  Client Company &amp; Billing Entity
                 </h2>
               </div>
 
@@ -1798,13 +1800,13 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                         : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
-                    New Press Client
+                    New Company Client
                   </button>
                 </div>
               )}
             </div>
 
-            {/* If Customer is Authenticated, Display Verified Press Card */}
+            {/* If Customer is Authenticated, Display Verified Company Card */}
             {activeCustomer ? (
               <div className="p-4 bg-cyan-50/70 border border-cyan-200 rounded-xl space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -1823,7 +1825,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                   </div>
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 self-start sm:self-auto">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>Verified Press Account</span>
+                    <span>Verified Company Account</span>
                   </span>
                 </div>
 
@@ -1833,8 +1835,8 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                     <strong className="font-mono text-slate-900">{activeCustomer.gstNumber || 'Unregistered'}</strong>
                   </div>
                   <div>
-                    <span className="text-[11px] text-slate-400 block">Receiving Dock</span>
-                    <strong className="text-slate-900">{deliveryAddress.plantOrUnitName || 'Central Pressroom'}</strong>
+                    <span className="text-[11px] text-slate-400 block">Receiving Facility</span>
+                    <strong className="text-slate-900">{deliveryAddress.plantOrUnitName || 'Main Facility'}</strong>
                   </div>
                   <div>
                     <span className="text-[11px] text-slate-400 block">Billing Terms</span>
@@ -1847,15 +1849,15 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
               onOpenCustomerAuth && (
                 <div className="mb-4 p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="text-xs text-slate-600">
-                    <strong className="text-slate-900 block">Have a registered print shop account?</strong>
-                    <span>Sign in with mobile OTP to auto-fill delivery docks and automatically link this order to your history.</span>
+                    <strong className="text-slate-900 block">Have a registered company account?</strong>
+                    <span>Sign in with mobile OTP to auto-fill delivery facilities and automatically link this order to your company history.</span>
                   </div>
                   <button
                     type="button"
                     onClick={onOpenCustomerAuth}
                     className="px-3.5 py-1.5 text-xs font-bold text-cyan-800 bg-cyan-100 hover:bg-cyan-200 border border-cyan-300 rounded-lg transition-colors whitespace-nowrap cursor-pointer shrink-0"
                   >
-                    Customer Sign In
+                    Company Sign In
                   </button>
                 </div>
               )
@@ -1865,7 +1867,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
               selectedCustomerMode === 'existing' ? (
                 <div className="space-y-3">
                 <label className="block text-xs font-semibold text-slate-700">
-                  Select Registered Printing House
+                  Select Registered Company
                 </label>
                 <select
                   value={selectedCustomerId}
@@ -1893,7 +1895,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Printing Press / Company Name *</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Company Name *</label>
                   <input
                     type="text"
                     required
@@ -1905,7 +1907,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                         setDeliveryAddress(prev => ({ ...prev, plantOrUnitName: e.target.value }));
                       }
                     }}
-                    placeholder="e.g. Precision Color Lithography Pvt. Ltd."
+                    placeholder="e.g. Modern Packaging &amp; Print Pvt. Ltd."
                     className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 focus:bg-white focus:ring-1 focus:ring-slate-900 focus:outline-none"
                   />
                 </div>
@@ -1922,7 +1924,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                         setDeliveryAddress(prev => ({ ...prev, dockContactPerson: e.target.value }));
                       }
                     }}
-                    placeholder="e.g. Ramesh Chandra (Press Head)"
+                    placeholder="e.g. Ramesh Chandra (Operations Head)"
                     className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 focus:bg-white focus:ring-1 focus:ring-slate-900 focus:outline-none"
                   />
                 </div>

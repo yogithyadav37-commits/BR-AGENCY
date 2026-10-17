@@ -246,11 +246,11 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
                   BR Agency
                 </span>
                 <span className="text-xs font-bold tracking-widest text-slate-500 uppercase">
-                  Press Inks
+                  Company Inks
                 </span>
               </div>
               <p className="text-xs text-slate-500 mt-1 max-w-sm">
-                Specialized Commercial Printing Press Process Inks · BIO SPEED &amp; BIO PACK Series
+                Specialized Commercial Printing Inks · BIO SPEED &amp; BIO PACK Series
               </p>
               <p className="text-xs text-slate-500 font-mono mt-0.5">
                 GSTIN: 07AAACB9821R1Z8 · State Code: 07 (Delhi) · HSN: 3215

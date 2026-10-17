@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   StockRequest, 
   InkSeriesId, 
   InkColorCode, 
   ContainerSizeId, 
-  UserRole 
+  UserRole,
+  CustomerProfile 
 } from '../types/ink';
-import { INK_SERIES, INK_COLORS, CONTAINER_OPTIONS, SAMPLE_CUSTOMERS } from '../data/mockData';
+import { INK_SERIES, INK_COLORS, CONTAINER_OPTIONS } from '../data/mockData';
 import { 
   Inbox, 
   Send, 
@@ -36,6 +37,7 @@ interface RequestStockViewProps {
   onUpdateStockRequestStatus: (requestId: string, status: StockRequest['status'], ownerResponse?: string) => void;
   userRole: UserRole;
   onExit?: () => void;
+  activeCustomer?: CustomerProfile | null;
 }
 
 export const RequestStockView: React.FC<RequestStockViewProps> = ({
@@ -44,6 +46,7 @@ export const RequestStockView: React.FC<RequestStockViewProps> = ({
   onUpdateStockRequestStatus,
   userRole,
   onExit,
+  activeCustomer,
 }) => {
   // Customer form state
   const [seriesId, setSeriesId] = useState<InkSeriesId>('BIO_SPEED');
@@ -56,13 +59,25 @@ export const RequestStockView: React.FC<RequestStockViewProps> = ({
     return d.toISOString().split('T')[0];
   });
   const [urgency, setUrgency] = useState<StockRequest['urgency']>('Urgent (Next 48 Hours)');
-  const [companyName, setCompanyName] = useState<string>(SAMPLE_CUSTOMERS[0].companyName);
-  const [contactPerson, setContactPerson] = useState<string>(SAMPLE_CUSTOMERS[0].contactPerson);
-  const [phone, setPhone] = useState<string>(SAMPLE_CUSTOMERS[0].phone);
-  const [email, setEmail] = useState<string>(SAMPLE_CUSTOMERS[0].email);
-  const [city, setCity] = useState<string>(SAMPLE_CUSTOMERS[0].city);
-  const [plantOrUnitName, setPlantOrUnitName] = useState<string>('Plant Unit #1');
+  const [companyName, setCompanyName] = useState<string>(activeCustomer?.companyName || '');
+  const [contactPerson, setContactPerson] = useState<string>(activeCustomer?.contactPerson || '');
+  const [phone, setPhone] = useState<string>(activeCustomer?.phone || '');
+  const [email, setEmail] = useState<string>(activeCustomer?.email || '');
+  const [city, setCity] = useState<string>(activeCustomer?.city || '');
+  const [plantOrUnitName, setPlantOrUnitName] = useState<string>(activeCustomer?.deliveryAddress?.plantOrUnitName || 'Main Facility / Receiving Bay');
   const [notes, setNotes] = useState<string>('');
+
+  // Sync with activeCustomer when logged in
+  useEffect(() => {
+    if (activeCustomer) {
+      if (activeCustomer.companyName) setCompanyName(activeCustomer.companyName);
+      if (activeCustomer.contactPerson) setContactPerson(activeCustomer.contactPerson);
+      if (activeCustomer.phone) setPhone(activeCustomer.phone);
+      if (activeCustomer.email) setEmail(activeCustomer.email);
+      if (activeCustomer.city) setCity(activeCustomer.city);
+      if (activeCustomer.deliveryAddress?.plantOrUnitName) setPlantOrUnitName(activeCustomer.deliveryAddress.plantOrUnitName);
+    }
+  }, [activeCustomer]);
 
   const [submittedNotice, setSubmittedNotice] = useState<string | null>(null);
 
@@ -101,17 +116,6 @@ export const RequestStockView: React.FC<RequestStockViewProps> = ({
     setNotes('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(() => setSubmittedNotice(null), 6000);
-  };
-
-  const handleApplyPresetCustomer = (custIndex: number) => {
-    const cust = SAMPLE_CUSTOMERS[custIndex];
-    if (!cust) return;
-    setCompanyName(cust.companyName);
-    setContactPerson(cust.contactPerson);
-    setPhone(cust.phone);
-    setEmail(cust.email);
-    setCity(cust.city);
-    setPlantOrUnitName(cust.deliveryAddress?.plantOrUnitName || 'Main Press Hall');
   };
 
   const filteredRequests = stockRequests.filter(r => {
@@ -186,25 +190,6 @@ export const RequestStockView: React.FC<RequestStockViewProps> = ({
                     <h2 className="text-sm font-bold text-white">New Stock Request Ticket</h2>
                     <span className="text-[11px] text-slate-400">Direct transmission to BR Agency Dispatch Desk</span>
                   </div>
-                </div>
-
-                {/* Autofill Customer Quick Pills */}
-                <div className="hidden sm:flex items-center gap-1 text-[11px]">
-                  <span className="text-slate-400">Demo Fill:</span>
-                  <button
-                    type="button"
-                    onClick={() => handleApplyPresetCustomer(0)}
-                    className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300"
-                  >
-                    Pragati
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleApplyPresetCustomer(1)}
-                    className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300"
-                  >
-                    Parksons
-                  </button>
                 </div>
               </div>
             </div>
@@ -285,7 +270,7 @@ export const RequestStockView: React.FC<RequestStockViewProps> = ({
               {/* 2. Timeline & Urgency */}
               <div className="pt-2 border-t border-slate-100">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-3">
-                  2. Timeline &amp; Pressroom Urgency
+                  2. Timeline &amp; Company Urgency
                 </span>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -313,7 +298,7 @@ export const RequestStockView: React.FC<RequestStockViewProps> = ({
                     >
                       <option value="Normal (Standard Delivery)">Normal (Standard Delivery - 3-5 days)</option>
                       <option value="Urgent (Next 48 Hours)">Urgent (Next 48 Hours Priority)</option>
-                      <option value="Critical Press Stoppage (Emergency)">Critical Press Stoppage (Emergency)</option>
+                      <option value="Critical Press Stoppage (Emergency)">Critical Production Stoppage (Emergency)</option>
                     </select>
                   </div>
                 </div>
@@ -393,21 +378,21 @@ export const RequestStockView: React.FC<RequestStockViewProps> = ({
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Plant Unit / Press Dock Name
+                      Plant Unit / Company Dock Name
                     </label>
                     <input
                       type="text"
                       value={plantOrUnitName}
                       onChange={(e) => setPlantOrUnitName(e.target.value)}
                       className="w-full text-xs px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-900"
-                      placeholder="e.g. Unit 2 (Heidelberg Line)"
+                      placeholder="e.g. Unit 2 (Receiving Dock)"
                     />
                   </div>
                 </div>
 
                 <div className="mt-4">
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Special Press Requirements &amp; Substrate Notes (Optional)
+                    Special Technical Requirements &amp; Substrate Notes (Optional)
                   </label>
                   <textarea
                     rows={2}
