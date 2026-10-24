@@ -336,13 +336,13 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
               </p>
             </div>
 
-            {/* 3. Pressroom & Technical Specifications */}
+            {/* 3. Company & Technical Specifications */}
             <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
-                Press &amp; Dispatch Standards
+                Equipment &amp; Dispatch Standards
               </span>
               <p className="font-semibold text-slate-900">
-                Press Equipment: {invoice.customer.pressModel}
+                Equipment: {invoice.customer.pressModel}
               </p>
               <p className="text-slate-600 mt-1">
                 Payment Terms: <span className="font-semibold text-slate-900">{invoice.paymentTerms}</span>
@@ -508,10 +508,10 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
           {/* Footer Terms & Signatures */}
           <div className="pt-6 border-t border-slate-200 text-[11px] text-slate-500 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <span className="font-bold text-slate-700 block mb-1">Standard Press Supply Terms:</span>
+              <span className="font-bold text-slate-700 block mb-1">Standard Company Supply Terms:</span>
               <p>
                 1. BR Agency inks are warranted to conform to ISO 2846-1 colorimetry and ISO 12647-2 standards.<br/>
-                2. Store tins and drums in a dry area between 15°C and 25°C. Stir thoroughly before press run.<br/>
+                2. Store containers in a dry area between 15°C and 25°C. Stir thoroughly before production run.<br/>
                 3. Overdue accounts subject to 1.5% monthly commercial interest.
               </p>
             </div>

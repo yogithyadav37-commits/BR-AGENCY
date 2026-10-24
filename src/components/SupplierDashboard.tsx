@@ -105,7 +105,7 @@ export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({
             Plant Production &amp; Batch Dispatch Controller
           </h1>
           <p className="mt-1 text-sm text-slate-600 max-w-3xl">
-            Real-time pressroom order queue management, aggregated CMYK pigment demand, 3-roll milling schedules, and laboratory release authorization.
+            Real-time company order queue management, aggregated CMYK pigment demand, 3-roll milling schedules, and laboratory release authorization.
           </p>
         </div>
 
@@ -130,7 +130,7 @@ export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({
             Active Milling &amp; Dispatch Queue ({totalActiveKg.toFixed(1)} kg Total Pending)
           </span>
           <span className="text-xs text-slate-500 font-medium">
-            Across {activeOrders.length} active press orders
+            Across {activeOrders.length} active company orders
           </span>
         </div>
 
@@ -192,7 +192,7 @@ export const SupplierDashboard: React.FC<SupplierDashboardProps> = ({
             {orders.length === 0 ? (
               <div className="p-12 text-center text-slate-500 text-sm space-y-2">
                 <p className="font-semibold text-slate-800">No active production or dispatch jobs in queue.</p>
-                <p className="text-xs text-slate-400">All previous orders have been cleared. New orders placed by printing press customers will appear in this milling &amp; dispatch controller.</p>
+                <p className="text-xs text-slate-400">All previous orders have been cleared. New orders placed by registered companies will appear in this milling &amp; dispatch controller.</p>
               </div>
             ) : (
               orders.map(order => {

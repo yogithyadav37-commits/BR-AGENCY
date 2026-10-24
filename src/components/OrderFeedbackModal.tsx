@@ -158,7 +158,7 @@ export const OrderFeedbackModal: React.FC<OrderFeedbackModalProps> = ({
                 Feedback Recorded!
               </h4>
               <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                Thank you for reviewing your press delivery. Your feedback helps our laboratory and logistics teams maintain ISO 12647 precision standards.
+                Thank you for reviewing your company delivery. Your feedback helps our laboratory and logistics teams maintain ISO 12647 precision standards.
               </p>
             </div>
           ) : (
@@ -184,7 +184,7 @@ export const OrderFeedbackModal: React.FC<OrderFeedbackModalProps> = ({
               {/* 1. Overall Star Rating */}
               <div className="p-4 bg-gradient-to-r from-amber-50/60 to-orange-50/40 border border-amber-200/80 rounded-xl text-center space-y-2">
                 <span className="font-bold text-xs uppercase tracking-wider text-slate-700 block">
-                  Overall Pressroom Satisfaction
+                  Overall Company Satisfaction
                 </span>
 
                 <div className="flex items-center justify-center gap-2 py-1">
@@ -245,10 +245,10 @@ export const OrderFeedbackModal: React.FC<OrderFeedbackModalProps> = ({
                     </div>
                   </div>
 
-                  {/* Press Performance */}
+                  {/* Production Equipment Performance */}
                   <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
                     <div>
-                      <span className="font-semibold text-slate-900 block text-xs">Press Run &amp; Tack</span>
+                      <span className="font-semibold text-slate-900 block text-xs">Print Run &amp; Tack</span>
                       <span className="text-[10px] text-slate-500">Viscosity &amp; high-speed setting</span>
                     </div>
                     <div className="flex gap-1">
@@ -269,7 +269,7 @@ export const OrderFeedbackModal: React.FC<OrderFeedbackModalProps> = ({
                   <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
                     <div>
                       <span className="font-semibold text-slate-900 block text-xs">Delivery &amp; Transit Speed</span>
-                      <span className="text-[10px] text-slate-500">Punctuality to press dock</span>
+                      <span className="text-[10px] text-slate-500">Punctuality to company dock</span>
                     </div>
                     <div className="flex gap-1">
                       {[1, 2, 3, 4, 5].map((s) => (
@@ -334,12 +334,12 @@ export const OrderFeedbackModal: React.FC<OrderFeedbackModalProps> = ({
                 </div>
               </div>
 
-              {/* 4. Comments & Pressroom Feedback Notes */}
+              {/* 4. Comments & Company Feedback Notes */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
                     <MessageSquare className="w-3.5 h-3.5 text-cyan-600" />
-                    <span>Pressroom Operator Comments</span>
+                    <span>Company Operator Comments</span>
                   </label>
                   <span className="text-[10px] text-slate-400 font-mono">
                     {comment.length}/500 chars
@@ -350,7 +350,7 @@ export const OrderFeedbackModal: React.FC<OrderFeedbackModalProps> = ({
                   maxLength={500}
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Share details regarding print density, rub resistance, emulsification stability on press, or driver delivery experience..."
+                  placeholder="Share details regarding print density, rub resistance, emulsification stability on equipment, or driver delivery experience..."
                   className="w-full text-xs p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900 resize-none"
                 />
               </div>
@@ -386,7 +386,7 @@ export const OrderFeedbackModal: React.FC<OrderFeedbackModalProps> = ({
                   className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl shadow-xs transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <ThumbsUp className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>{existingFeedback ? 'Update Review' : 'Submit Press Review'}</span>
+                  <span>{existingFeedback ? 'Update Review' : 'Submit Company Review'}</span>
                 </button>
               </div>
             </>

@@ -131,7 +131,7 @@ export const TrackingView: React.FC<TrackingViewProps> = ({
           <div className="flex items-center gap-2 text-xs font-medium text-slate-500 mb-1">
             <span>Batch Fulfillment</span>
             <span aria-hidden="true">·</span>
-            <span>Dispersion to Pressroom Dock</span>
+            <span>Dispersion to Company Dock</span>
             <span aria-hidden="true">·</span>
             <span>Live Telemetry</span>
           </div>
@@ -168,7 +168,7 @@ export const TrackingView: React.FC<TrackingViewProps> = ({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search Order #, Press, Batch, Tracking..."
+                placeholder="Search Order #, Company, Batch, Tracking..."
                 className="w-full text-xs pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900"
               />
             </div>
@@ -406,7 +406,7 @@ export const TrackingView: React.FC<TrackingViewProps> = ({
                           ? 'bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100'
                           : 'bg-amber-500 hover:bg-amber-600 text-white shadow-xs'
                       }`}
-                      title="Rate your pressroom experience for this delivered order"
+                      title="Rate your company experience for this delivered order"
                     >
                       <Star className={`w-3.5 h-3.5 ${activeOrder.feedback ? 'fill-amber-500 text-amber-500' : 'fill-white text-white'}`} />
                       <span>{activeOrder.feedback ? `Rated ${activeOrder.feedback.rating}★` : 'Rate Order'}</span>
@@ -497,7 +497,7 @@ export const TrackingView: React.FC<TrackingViewProps> = ({
                       <div>
                         <div className="flex items-center gap-2">
                           <h4 className="font-bold text-slate-900 text-sm">
-                            {activeOrder.feedback ? 'Your Pressroom Delivery Review' : 'Pressroom Delivery Complete — Rate Your Experience'}
+                            {activeOrder.feedback ? 'Your Company Delivery Review' : 'Company Delivery Complete — Rate Your Experience'}
                           </h4>
                           <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
                             Delivered at Dock
@@ -505,8 +505,8 @@ export const TrackingView: React.FC<TrackingViewProps> = ({
                         </div>
                         <p className="text-xs text-slate-600 mt-1 max-w-xl">
                           {activeOrder.feedback
-                            ? 'Thank you for your valuable feedback! Your review helps our lab maintain batch-to-batch consistency and high speed press performance.'
-                            : 'This batch has arrived at your receiving bay. Rate your pressrun experience, dot gain, setting time, and freight delivery to complete ISO quality verification.'}
+                            ? 'Thank you for your valuable feedback! Your review helps our lab maintain batch-to-batch consistency and high speed production equipment performance.'
+                            : 'This batch has arrived at your receiving bay. Rate your run experience, dot gain, setting time, and freight delivery to complete ISO quality verification.'}
                         </p>
 
                         {/* If feedback exists, show summary */}
@@ -570,7 +570,7 @@ export const TrackingView: React.FC<TrackingViewProps> = ({
                         className="px-4 py-2.5 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl transition-all inline-flex items-center gap-1.5 shadow-sm cursor-pointer hover:scale-[1.02]"
                       >
                         <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                        <span>{activeOrder.feedback ? 'Edit Press Review' : 'Rate & Leave Comments'}</span>
+                        <span>{activeOrder.feedback ? 'Edit Company Review' : 'Rate & Leave Comments'}</span>
                       </button>
                     </div>
                   </div>
@@ -579,12 +579,12 @@ export const TrackingView: React.FC<TrackingViewProps> = ({
 
               {/* Transit, Receiving Dock & Live QC Details (3-Column Layout) */}
               <div className="pt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
-                {/* 1. Press Delivery Destination & Dock */}
+                {/* 1. Company Delivery Destination & Dock */}
                 <div className="space-y-2.5">
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-cyan-700" />
                     <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
-                      Press Delivery Dock
+                      Company Delivery Dock
                     </h4>
                   </div>
 

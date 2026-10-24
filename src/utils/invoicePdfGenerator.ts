@@ -42,7 +42,7 @@ export function generateInvoicePdf(invoice: Invoice, order?: Order | null): jsPD
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(16);
-  doc.text('BR AGENCY PRESS INKS', margin + 6, currentY + 8);
+  doc.text('BR AGENCY COMPANY INKS', margin + 6, currentY + 8);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
@@ -175,7 +175,7 @@ export function generateInvoicePdf(invoice: Invoice, order?: Order | null): jsPD
   doc.text(`GSTIN: ${invoice.customer.gstNumber}`, margin + 4, currentY + 30);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(71, 85, 105);
-  doc.text(`Phone: ${invoice.customer.phone} | Press: ${invoice.customer.pressModel}`, margin + 4, currentY + 34.5);
+  doc.text(`Phone: ${invoice.customer.phone} | Equipment: ${invoice.customer.pressModel}`, margin + 4, currentY + 34.5);
 
   // Panel 2: Shipped To (Delivery Dock)
   const shipX = margin + panelWidth + 6;

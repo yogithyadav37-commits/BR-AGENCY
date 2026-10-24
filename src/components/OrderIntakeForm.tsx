@@ -3,7 +3,6 @@ import {
   INK_SERIES, 
   INK_COLORS, 
   CONTAINER_OPTIONS, 
-  SAMPLE_CUSTOMERS,
   SAMPLE_CUSTOMER_REVIEWS 
 } from '../data/mockData';
 import { 
@@ -140,9 +139,13 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
   const [jobReference, setJobReference] = useState<string>('JOB-' + Math.floor(1000 + Math.random() * 9000));
   const [customerNotes, setCustomerNotes] = useState<string>('');
 
-  // 4. Customer Selection & Details
-  const [selectedCustomerMode, setSelectedCustomerMode] = useState<'existing' | 'new'>('existing');
-  const [selectedCustomerId, setSelectedCustomerId] = useState<string>(SAMPLE_CUSTOMERS[0].id);
+  // 4. Customer Selection & Details (Uses activeCustomer or registeredCompanies, never hardcoded demo accounts)
+  const [selectedCustomerMode, setSelectedCustomerMode] = useState<'existing' | 'new'>(
+    (registeredCompanies && registeredCompanies.length > 0) ? 'existing' : 'new'
+  );
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string>(
+    (registeredCompanies && registeredCompanies.length > 0) ? registeredCompanies[0].id : ''
+  );
   const [customCustomer, setCustomCustomer] = useState<CustomerProfile>({
     id: 'CUST-NEW-' + Date.now().toString().slice(-4),
     companyName: '',
@@ -152,26 +155,30 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
     gstNumber: '',
     address: '',
     city: '',
-    state: '',
+    state: 'Delhi',
     postalCode: '',
-    pressModel: 'Heidelberg Speedmaster',
+    pressModel: 'Offset Machinery',
     paymentTerms: 'Net 30'
   });
 
   // 5. Orderer Delivery Address State
   const [deliveryAddressMode, setDeliveryAddressMode] = useState<'registered' | 'alternate'>('registered');
   const [deliveryAddress, setDeliveryAddress] = useState<DeliveryAddress>(() => {
-    return SAMPLE_CUSTOMERS[0].deliveryAddress || {
-      plantOrUnitName: 'Apex Litho Unit 2 (Web Offset Division)',
-      streetAddress: 'Plot 44, Main Road, Naraina Industrial Area Phase-II',
-      landmark: 'Near Container Depot / Opposite Substation 4',
-      city: 'New Delhi',
+    if (activeCustomer?.deliveryAddress) return activeCustomer.deliveryAddress;
+    if (registeredCompanies.length > 0 && registeredCompanies[0].deliveryAddress) {
+      return registeredCompanies[0].deliveryAddress;
+    }
+    return {
+      plantOrUnitName: '',
+      streetAddress: '',
+      landmark: '',
+      city: '',
       state: 'Delhi',
-      postalCode: '110028',
-      dockContactPerson: 'Suresh Kumar (Receiving In-charge)',
-      dockContactPhone: '+91 98112 34891',
-      gateOrBayNumber: 'Gate 2 (Heavy Loading Dock)',
-      unloadingRequirements: 'Forklift on site for pails and drums. Delivery between 9 AM - 5 PM.',
+      postalCode: '',
+      dockContactPerson: '',
+      dockContactPhone: '',
+      gateOrBayNumber: 'Bay 1 (Receiving Dock)',
+      unloadingRequirements: 'Standard commercial freight delivery',
       deliveryTimeSlot: '10:00 AM - 05:00 PM'
     };
   });
@@ -226,7 +233,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
 
   const handleSelectCustomer = (id: string) => {
     setSelectedCustomerId(id);
-    const found = SAMPLE_CUSTOMERS.find(c => c.id === id);
+    const found = registeredCompanies.find(c => c.id === id);
     if (found && deliveryAddressMode === 'registered' && found.deliveryAddress) {
       setDeliveryAddress(found.deliveryAddress);
     }
@@ -236,13 +243,13 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
     setDeliveryAddressMode(mode);
     if (mode === 'registered') {
       if (selectedCustomerMode === 'existing') {
-        const found = SAMPLE_CUSTOMERS.find(c => c.id === selectedCustomerId);
+        const found = registeredCompanies.find(c => c.id === selectedCustomerId);
         if (found?.deliveryAddress) {
           setDeliveryAddress(found.deliveryAddress);
         }
       } else {
         setDeliveryAddress({
-          plantOrUnitName: customCustomer.companyName || 'Printing Plant Receiving Dock',
+          plantOrUnitName: customCustomer.companyName ? `${customCustomer.companyName} Receiving Dock` : 'Company Receiving Dock',
           streetAddress: customCustomer.address || '',
           landmark: '',
           city: customCustomer.city || '',
@@ -310,153 +317,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
     }
   };
 
-  // Helper: Create a sample delivered order so clients/evaluators can test the 5-star review flow immediately
-  const handleCreateSampleDeliveredOrder = () => {
-    const cust = SAMPLE_CUSTOMERS[0];
-    const orderNum = `ORD-2026-${Math.floor(1000 + Math.random() * 9000)}`;
-    const invNum = `INV-2026-${Math.floor(1000 + Math.random() * 9000)}`;
-    const newOrdId = `ord_${Date.now()}`;
-    const sampleItems = [
-      {
-        seriesId: 'BIO_SPEED' as const,
-        color: 'Cyan' as const,
-        containerId: 'can_2_5kg' as const,
-        containerLabel: '2.5 kg Can',
-        containersCount: 4,
-        kgPerUnit: 2.5,
-        totalKg: 10,
-        unitPricePerKg: 420.00,
-        totalPrice: 4200.00
-      },
-      {
-        seriesId: 'BIO_SPEED' as const,
-        color: 'Magenta' as const,
-        containerId: 'can_2_5kg' as const,
-        containerLabel: '2.5 kg Can',
-        containersCount: 4,
-        kgPerUnit: 2.5,
-        totalKg: 10,
-        unitPricePerKg: 460.00,
-        totalPrice: 4600.00
-      },
-      {
-        seriesId: 'BIO_SPEED' as const,
-        color: 'Yellow' as const,
-        containerId: 'can_2_5kg' as const,
-        containerLabel: '2.5 kg Can',
-        containersCount: 4,
-        kgPerUnit: 2.5,
-        totalKg: 10,
-        unitPricePerKg: 440.00,
-        totalPrice: 4400.00
-      },
-      {
-        seriesId: 'BIO_SPEED' as const,
-        color: 'Black' as const,
-        containerId: 'can_2_5kg' as const,
-        containerLabel: '2.5 kg Can',
-        containersCount: 8,
-        kgPerUnit: 2.5,
-        totalKg: 20,
-        unitPricePerKg: 320.00,
-        totalPrice: 6400.00
-      }
-    ];
-    const subtotal = 19600.00;
-    const taxAmount = subtotal * 0.18;
-    const shippingFee = 0;
-    const totalAmount = subtotal + taxAmount;
 
-    const newOrder: Order = {
-      id: newOrdId,
-      orderNumber: orderNum,
-      createdAt: new Date().toISOString(),
-      customer: cust,
-      deliveryAddress: cust.deliveryAddress,
-      items: sampleItems,
-      subtotal,
-      discountPct: 0,
-      discountAmount: 0,
-      taxPct: 18,
-      taxAmount,
-      shippingFee,
-      totalAmount,
-      totalKg: 50,
-      priority: 'Standard (48h)',
-      pressJobRef: 'JOB-APX-7721',
-      notes: 'Sample delivered order for testing customer reviews & feedback',
-      status: 'delivered',
-      invoiceId: invNum,
-      paymentStatus: 'paid',
-      deliveryRouting: {
-        method: 'external_app',
-        providerId: 'porter',
-        providerName: 'Porter (Mini Truck / 3-Wheeler)',
-        pickupWarehouse: BR_AGENCY_PICKUP_HUB,
-        recommendedVehicle: 'Tata Ace / 3-Wheeler (750 kg payload)',
-        driverName: 'Ramesh Yadav',
-        driverPhone: '+91 98112 00192',
-        vehicleNumber: 'DL-1L-AA-4091',
-        externalBookingRef: 'CRN-8829-POR'
-      },
-      tracking: {
-        carrier: 'Porter Express',
-        trackingNumber: 'CRN-8829-POR',
-        vehicleNumber: 'DL-1L-AA-4091',
-        driverName: 'Ramesh Yadav',
-        driverPhone: '+91 98112 00192',
-        currentLocation: `Delivered & Inspected at ${cust.companyName}`,
-        estimatedArrival: 'Delivered',
-        batchNumber: 'BS-2610-91A',
-        qcCertificateId: 'QC-CERT-8840',
-        qcPassedDate: new Date().toISOString(),
-        qcInspectedBy: 'Dr. A. K. Verma',
-        testedTack: '11.4',
-        testedFineness: '1.1 µm',
-        milestones: [
-          { status: 'received', title: 'Order Confirmed', description: 'Batch booked', timestamp: 'Yesterday', completed: true },
-          { status: 'formulation', title: 'Milling & Dispersion', description: '3-Roll milling finished', timestamp: 'Yesterday', completed: true },
-          { status: 'qc_passed', title: 'Quality Assurance', description: 'Lab QC pass', timestamp: 'Yesterday', completed: true },
-          { status: 'packed', title: 'Nitrogen Sealing', description: 'Packed in vacuum cans', timestamp: 'Today 09:00', completed: true },
-          { status: 'dispatched', title: 'Dispatched via Porter', description: 'Driver en route', timestamp: 'Today 11:30', completed: true },
-          { status: 'delivered', title: 'Delivered to Press Dock', description: 'Consignment signed at dock', timestamp: 'Today 13:45', completed: true }
-        ]
-      }
-    };
-
-    const newInvoice: Invoice = {
-      id: invNum,
-      invoiceNumber: invNum,
-      orderId: newOrdId,
-      orderNumber: orderNum,
-      issueDate: new Date().toISOString().split('T')[0],
-      dueDate: new Date().toISOString().split('T')[0],
-      customer: cust,
-      deliveryAddress: cust.deliveryAddress!,
-      items: sampleItems,
-      subtotal,
-      discountAmount: 0,
-      taxRate: 18,
-      taxAmount,
-      shippingFee,
-      totalAmount,
-      paidAmount: totalAmount,
-      status: 'paid',
-      paymentTerms: 'Net 30',
-      bankDetails: {
-        bankName: 'HDFC Bank Ltd.',
-        accountName: 'BR Agency Ink Supplies',
-        accountNumber: '5020-0048-9921-34',
-        ifscOrSwift: 'HDFC0001048',
-        branch: 'Naraina Industrial Area'
-      },
-      payments: []
-    };
-
-    onSubmitSuccess(newOrder, newInvoice);
-    setFeedbackOrder(newOrder);
-    setIsFeedbackModalOpen(true);
-  };
 
   const activeSeries = INK_SERIES[selectedSeries];
 
@@ -595,8 +456,8 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
   // Determine Customer (Prefer active authenticated customer session)
   const effectiveCustomer: CustomerProfile = activeCustomer
     ? activeCustomer
-    : (selectedCustomerMode === 'existing'
-      ? (SAMPLE_CUSTOMERS.find(c => c.id === selectedCustomerId) || SAMPLE_CUSTOMERS[0])
+    : (selectedCustomerMode === 'existing' && registeredCompanies.length > 0
+      ? (registeredCompanies.find(c => c.id === selectedCustomerId) || registeredCompanies[0])
       : customCustomer);
 
   // Handle Form Submission
@@ -724,7 +585,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
           },
           {
             status: 'delivered',
-            title: 'Delivered to Pressroom Receiving Bay',
+            title: 'Delivered to Company Receiving Bay',
             description: `Delivery destination: ${deliveryAddress.plantOrUnitName || effectiveCustomer.companyName}, ${deliveryAddress.streetAddress}, ${deliveryAddress.city} - ${deliveryAddress.postalCode}. Dock In-charge: ${deliveryAddress.dockContactPerson} (${deliveryAddress.dockContactPhone}).`,
             timestamp: priority.includes('Same-Day') ? 'Expected Today' : 'Expected within 48h',
             location: `${deliveryAddress.plantOrUnitName || effectiveCustomer.companyName}, ${deliveryAddress.city}`,
@@ -791,7 +652,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-6 border-y border-slate-100 text-sm">
             <div>
-              <span className="text-xs text-slate-500 uppercase tracking-wide">Client Press</span>
+              <span className="text-xs text-slate-500 uppercase tracking-wide">Client Company</span>
               <p className="font-semibold text-slate-900 mt-0.5">{submittedOrder.customer.companyName}</p>
               <p className="text-xs text-slate-500 mt-1">{submittedOrder.customer.pressModel}</p>
             </div>
@@ -1001,7 +862,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                   <div className="flex items-center gap-2">
                     <h4 className="font-bold text-slate-900 text-sm">
                       {submittedOrder.status === 'delivered'
-                        ? (submittedOrder.feedback ? 'Pressroom Delivery Review Submitted' : 'Consignment Delivered! Rate Your Experience')
+                        ? (submittedOrder.feedback ? 'Company Delivery Review Submitted' : 'Consignment Delivered! Rate Your Experience')
                         : 'Customer Review & Feedback System'}
                     </h4>
                     <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
@@ -1016,7 +877,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                     {submittedOrder.status === 'delivered'
                       ? (submittedOrder.feedback
                           ? `You rated this batch ${submittedOrder.feedback.rating}/5 stars. Thank you for helping our laboratory maintain ISO standards!`
-                          : 'Your ink consignment has arrived at the pressroom receiving dock. Submit your rating for ink gloss, tack, packaging, and delivery transit.')
+                          : 'Your ink consignment has arrived at the company receiving dock. Submit your rating for ink gloss, tack, packaging, and delivery transit.')
                       : 'Once this ink batch arrives at your receiving dock and is marked as delivered, you can rate ink quality, dot gain, and dispatch punctuality.'}
                   </p>
                 </div>
@@ -1050,7 +911,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                     className="px-4 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-all inline-flex items-center gap-1.5 shadow-xs cursor-pointer hover:scale-[1.02]"
                   >
                     <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                    <span>{submittedOrder.feedback ? 'Edit Press Review' : 'Rate Order Experience'}</span>
+                    <span>{submittedOrder.feedback ? 'Edit Company Review' : 'Rate Order Experience'}</span>
                   </button>
                 )}
               </div>
@@ -1164,17 +1025,17 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-xs font-medium text-slate-500 mb-1">
-              <span>Pressroom Supply</span>
+              <span>Company Supply</span>
               <span aria-hidden="true">·</span>
               <span>BIO SPEED & BIO PACK</span>
               <span aria-hidden="true">·</span>
               <span>CMYK Offset Formulations</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Commercial Ink Intake & Press Specification
+              Commercial Ink Intake & Order Specification
             </h1>
             <p className="mt-1 text-sm text-slate-600 max-w-2xl">
-              Configure press-ready process ink batches with custom container packaging, pressroom tack calibration, real-time volume pricing, and automated tax invoicing.
+              Configure process ink batches with custom container packaging, technical tack calibration, real-time volume pricing, and automated tax invoicing.
             </p>
           </div>
 
@@ -1220,14 +1081,14 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="font-bold text-slate-900 text-sm">
-                    Delivered Inks Awaiting Press Experience Review
+                    Delivered Inks Awaiting Company Review
                   </h3>
                   <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-200 text-amber-950 border border-amber-300">
                     {unreviewedDelivered.length} Order{unreviewedDelivered.length > 1 ? 's' : ''} Ready for Rating
                   </span>
                 </div>
                 <p className="text-xs text-slate-600 mt-1 max-w-2xl leading-relaxed">
-                  Your process ink batch arrived at your printing dock. Rate your pressrun setting time, dot sharpness, rub resistance, and freight delivery to complete quality records.
+                  Your process ink batch arrived at your company dock. Rate your ink setting time, dot sharpness, rub resistance, and freight delivery to complete quality records.
                 </p>
               </div>
             </div>
@@ -1255,7 +1116,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>
-              All <strong>{reviewedDelivered.length}</strong> delivered order(s) have been reviewed. Thank you for rating your press runs!
+              All <strong>{reviewedDelivered.length}</strong> delivered order(s) have been reviewed. Thank you for rating your company orders!
             </span>
           </div>
           <button
@@ -1268,62 +1129,6 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
           >
             <span>View / Edit Review #{reviewedDelivered[0].orderNumber}</span>
           </button>
-        </div>
-      ) : orders.length > 0 && deliveredOrders.length === 0 ? (
-        <div className="mb-6 p-3 bg-slate-50 border border-slate-200 rounded-xl flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
-          <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-cyan-600 shrink-0" />
-            <span>
-              You have <strong>{orders.length}</strong> active batch order(s). Customer reviews unlock automatically once an order is marked <strong>Delivered</strong>.
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            {onDeliverOrder && orders[0] && (
-              <button
-                type="button"
-                onClick={() => onDeliverOrder(orders[0].id)}
-                className="px-2.5 py-1 text-[11px] font-semibold text-slate-800 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg transition-colors inline-flex items-center gap-1 cursor-pointer"
-                title="Mark this order as delivered to test client review & rating"
-              >
-                <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                <span>Simulate Delivery for #{orders[0].orderNumber} (Test Review Flow)</span>
-              </button>
-            )}
-            <button
-              type="button"
-              onClick={() => onNavigateToTracking(orders[0]?.id || '')}
-              className="px-2.5 py-1 text-[11px] font-semibold text-cyan-800 bg-cyan-50 hover:bg-cyan-100 border border-cyan-200 rounded-lg transition-colors cursor-pointer"
-            >
-              Track in Telemetry →
-            </button>
-          </div>
-        </div>
-      ) : orders.length === 0 ? (
-        <div className="mb-6 p-3.5 bg-gradient-to-r from-cyan-50/70 via-blue-50/40 to-cyan-50/70 border border-cyan-200 rounded-xl flex flex-wrap items-center justify-between gap-3 text-xs text-slate-700 shadow-2xs">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-cyan-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-              <Star className="w-4 h-4 fill-white text-white" />
-            </div>
-            <div>
-              <span className="font-bold text-slate-900 block text-xs">
-                Customer Pressroom Review &amp; Quality Feedback System
-              </span>
-              <p className="text-[11px] text-slate-600 mt-0.5">
-                Rate ink drying speed, tack, dot reproduction, and freight delivery once your consignment is delivered to your press dock.
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handleCreateSampleDeliveredOrder}
-              className="px-3 py-1.5 text-xs font-semibold text-slate-800 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg transition-colors inline-flex items-center gap-1.5 shadow-2xs cursor-pointer hover:border-slate-400"
-              title="Generate a sample delivered consignment to test the 5-star rating and comment submission flow"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-600" />
-              <span>Simulate Delivered Order (Test Review Flow)</span>
-            </button>
-          </div>
         </div>
       ) : null}
 
@@ -1651,21 +1456,21 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             </div>
           </section>
 
-          {/* Section 3: Pressroom Requirements & Dispatch Urgency */}
+          {/* Section 3: Technical Specifications & Dispatch Urgency */}
           <section className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
             <div className="mb-4">
               <span className="text-xs font-mono font-medium text-slate-400 uppercase tracking-wider">
-                03. Press Technical Specification
+                03. Company Technical Specification
               </span>
               <h2 className="text-lg font-bold text-slate-900">
-                Machine Matching & Delivery Schedule
+                Machine Matching &amp; Delivery Schedule
               </h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Press Machine Model
+                  Production Machinery / Equipment Model
                 </label>
                 <select
                   value={pressModel}
@@ -1700,7 +1505,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Tack & Viscosity Formulation
+                  Tack &amp; Viscosity Formulation
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {(['Standard', 'High Tack', 'Soft Tack'] as const).map(grade => (
@@ -1737,7 +1542,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Press Job / PO Reference
+                  Purchase Order / Company Job Ref
                 </label>
                 <input
                   type="text"
@@ -1750,7 +1555,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Pressroom Operator Notes
+                  Company Dispatch / Handling Notes
                 </label>
                 <input
                   type="text"
@@ -1763,25 +1568,25 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             </div>
           </section>
 
-          {/* Section 4: Customer Account */}
+          {/* Section 4: Company Account */}
           <section className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
                 <span className="text-xs font-mono font-medium text-slate-400 uppercase tracking-wider">
-                  04. Customer Account
+                  04. Company Account
                 </span>
                 <h2 className="text-lg font-bold text-slate-900">
                   Client Company &amp; Billing Entity
                 </h2>
               </div>
 
-              {!activeCustomer && (
+              {!activeCustomer && registeredCompanies.length > 0 && (
                 <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg text-xs">
                   <button
                     type="button"
                     onClick={() => {
                       setSelectedCustomerMode('existing');
-                      handleSelectCustomer(selectedCustomerId);
+                      handleSelectCustomer(selectedCustomerId || registeredCompanies[0].id);
                     }}
                     className={`px-3 py-1 font-medium rounded-md transition-colors ${
                       selectedCustomerMode === 'existing'
@@ -1864,7 +1669,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             )}
 
             {!activeCustomer && (
-              selectedCustomerMode === 'existing' ? (
+              selectedCustomerMode === 'existing' && registeredCompanies.length > 0 ? (
                 <div className="space-y-3">
                 <label className="block text-xs font-semibold text-slate-700">
                   Select Registered Company
@@ -1874,7 +1679,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                   onChange={(e) => handleSelectCustomer(e.target.value)}
                   className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900"
                 >
-                  {SAMPLE_CUSTOMERS.map(c => (
+                  {registeredCompanies.map(c => (
                     <option key={c.id} value={c.id}>
                       {c.companyName} — {c.city}, {c.state} ({c.contactPerson})
                     </option>
@@ -1950,7 +1755,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                     type="email"
                     value={customCustomer.email}
                     onChange={(e) => setCustomCustomer({ ...customCustomer, email: e.target.value })}
-                    placeholder="accounts@press.com"
+                    placeholder="accounts@company.in"
                     className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 focus:bg-white focus:ring-1 focus:ring-slate-900 focus:outline-none"
                   />
                 </div>
@@ -2184,8 +1989,8 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                 >
                   <option value="09:00 AM - 01:00 PM">Morning (09:00 AM - 01:00 PM)</option>
                   <option value="01:00 PM - 06:00 PM">Afternoon (01:00 PM - 06:00 PM)</option>
-                  <option value="10:00 AM - 05:00 PM">Standard Press Hours (10:00 AM - 05:00 PM)</option>
-                  <option value="Anytime (24-Hour Press Dock)">24-Hour Press Dock (Anytime)</option>
+                  <option value="10:00 AM - 05:00 PM">Standard Operating Hours (10:00 AM - 05:00 PM)</option>
+                  <option value="Anytime (24-Hour Receiving Dock)">24-Hour Company Receiving Dock (Anytime)</option>
                 </select>
               </div>
 
@@ -2221,7 +2026,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                   Delivery &amp; Transporter Routing Method
                 </h2>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  You have full freedom to route your consignment via BR Agency dedicated transport, or directly route to popular delivery applications (Porter, Borzo, Delhivery, etc.) or send your own press driver.
+                  You have full freedom to route your consignment via BR Agency dedicated transport, or directly route to popular delivery applications (Porter, Borzo, Delhivery, etc.) or send your own company driver.
                 </p>
               </div>
 
@@ -2249,7 +2054,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                   <span className={`w-2.5 h-2.5 rounded-full ${deliveryMethod === 'br_dedicated' ? 'bg-cyan-400' : 'bg-slate-300'}`} />
                 </div>
                 <p className={`text-[11px] leading-relaxed ${deliveryMethod === 'br_dedicated' ? 'text-slate-300' : 'text-slate-500'}`}>
-                  In-house temperature-controlled freight vehicle. Fully insured and door-to-press delivery with BR logistics team.
+                  In-house temperature-controlled freight vehicle. Fully insured and door-to-company delivery with BR logistics team.
                 </p>
                 <div className="mt-3 pt-2.5 border-t border-slate-200/40 text-[10px] font-mono flex items-center justify-between">
                   <span>Standard Freight</span>
@@ -2297,7 +2102,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                   <span className={`w-2.5 h-2.5 rounded-full ${deliveryMethod === 'customer_pickup' ? 'bg-amber-600' : 'bg-slate-300'}`} />
                 </div>
                 <p className="text-[11px] text-slate-600 leading-relaxed">
-                  Send your own printing press company tempo, Tata Ace, or driver to pick up directly at Naraina Bay 2 dock.
+                  Send your own company tempo, vehicle, or driver to pick up directly at Naraina Bay 2 dock.
                 </p>
                 <div className="mt-3 pt-2.5 border-t border-amber-200 text-[10px] font-mono flex items-center justify-between text-amber-900 font-semibold">
                   <span>BR Freight Fee</span>
@@ -2374,7 +2179,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                       1-Click Manifest for {EXTERNAL_DELIVERY_APPS.find(a => a.id === selectedAppId)?.name || 'Delivery App'}
                     </span>
                     <p className="text-[11px] text-slate-500">
-                      Copies BR Naraina Pickup Hub Gate 2 address + your press delivery dock so you can paste into the app.
+                      Copies BR Naraina Pickup Hub Gate 2 address + your company delivery dock so you can paste into the app.
                     </p>
                   </div>
 
@@ -2473,13 +2278,13 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                   <div>
                     <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                      Driver / Pressroom Representative Name
+                      Driver / Company Representative Name
                     </label>
                     <input
                       type="text"
                       value={externalDriverName}
                       onChange={(e) => setExternalDriverName(e.target.value)}
-                      placeholder="e.g. Ram Singh (Apex Press Driver)"
+                      placeholder="e.g. Ram Singh (Company Driver)"
                       className="w-full text-xs bg-white border border-amber-200 rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-slate-900 focus:outline-none"
                     />
                   </div>
@@ -2558,7 +2363,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                   ? `Add ${(100 - totalKg).toFixed(1)} kg more to unlock 5% volume discount.`
                   : totalKg < 250
                   ? `Qualified for 5% off! Add ${(250 - totalKg).toFixed(1)} kg for 10% off.`
-                  : `Tier qualified for ${discountPct}% off enterprise press supply.`}
+                  : `Tier qualified for ${discountPct}% off enterprise company supply.`}
               </p>
             </div>
 
@@ -2674,16 +2479,16 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             <div className="flex items-center gap-2 text-xs font-mono font-medium text-slate-500 mb-1">
               <span className="text-amber-600 font-bold flex items-center gap-1">
                 <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                Pressroom Voice &amp; Audited Quality
+                Company Voice &amp; Audited Quality
               </span>
               <span aria-hidden="true">·</span>
               <span>ISO 12647-2 Compliance</span>
             </div>
             <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-              Customer Reviews &amp; Pressroom Experience
+              Customer Reviews &amp; Company Experience
             </h2>
             <p className="mt-1 text-xs text-slate-600 max-w-2xl leading-relaxed">
-              Real feedback from commercial offset printing presses across India on dot sharpness, high-speed press stability, vacuum can integrity, and dedicated delivery transit.
+              Real feedback from commercial printing companies across India on dot sharpness, high-speed equipment stability, vacuum can integrity, and dedicated delivery transit.
             </p>
           </div>
 
@@ -2709,7 +2514,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                 <strong className="text-slate-900 font-mono">5.0 ★</strong>
               </div>
               <div className="flex items-center justify-between gap-4">
-                <span>Press Setting &amp; Tack:</span>
+                <span>Ink Setting &amp; Tack:</span>
                 <strong className="text-slate-900 font-mono">4.9 ★</strong>
               </div>
               <div className="flex items-center justify-between gap-4">
@@ -2733,7 +2538,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                 <span>Your Delivered Ink Orders ({deliveredOrders.length})</span>
               </h3>
               <span className="text-[11px] text-slate-500">
-                Click any order to submit or update your press review
+                Click any order to submit or update your company review
               </span>
             </div>
 
@@ -2791,7 +2596,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                       }`}
                     >
                       <Star className={`w-3.5 h-3.5 ${hasFeedback ? 'text-amber-500 fill-amber-500' : 'text-amber-400 fill-amber-400'}`} />
-                      <span>{hasFeedback ? 'Edit Press Review' : 'Rate This Delivery'}</span>
+                      <span>{hasFeedback ? 'Edit Company Review' : 'Rate This Delivery'}</span>
                     </button>
                   </div>
                 );
@@ -2809,7 +2614,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
               </div>
               <div>
                 <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wide">
-                  Active Press Batches in Fulfillment ({orders.length})
+                  Active Company Batches in Fulfillment ({orders.length})
                 </h4>
                 <p className="text-[11px] text-slate-500 mt-0.5">
                   Client review submissions unlock automatically once the freight truck or delivery courier is checked into your receiving dock.
@@ -2821,10 +2626,10 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                 type="button"
                 onClick={() => onDeliverOrder(orders[0].id)}
                 className="px-3.5 py-2 text-xs font-semibold text-slate-800 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg transition-colors inline-flex items-center gap-1.5 shadow-2xs shrink-0 cursor-pointer"
-                title="Simulate dock delivery to test feedback and star rating"
+                title="Mark dock delivery complete to enable feedback"
               >
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Simulate Delivery for #{orders[0].orderNumber} (Test Review)</span>
+                <span>Mark Delivery Complete for #{orders[0].orderNumber}</span>
               </button>
             )}
           </div>
@@ -2832,28 +2637,18 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
 
         {/* If No Orders yet in system */}
         {orders.length === 0 && (
-          <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-slate-700">
-            <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
-                <Star className="w-5 h-5 fill-amber-500 text-amber-500" />
-              </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wide">
-                  Rate Your Pressroom Consignment
-                </h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">
-                  Clients rate their delivery experience once an order is marked delivered. Configure an ink batch above or click below to simulate a delivered order and test the full review modal.
-                </p>
-              </div>
+          <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center gap-3 text-xs text-slate-700">
+            <div className="w-9 h-9 rounded-lg bg-cyan-100 text-cyan-800 flex items-center justify-center shrink-0">
+              <Star className="w-5 h-5 fill-cyan-600 text-cyan-600" />
             </div>
-            <button
-              type="button"
-              onClick={handleCreateSampleDeliveredOrder}
-              className="px-3.5 py-2 text-xs font-semibold text-slate-800 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg transition-colors inline-flex items-center gap-1.5 shadow-2xs shrink-0 cursor-pointer hover:border-slate-400"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-600" />
-              <span>Simulate Delivered Order (Test Review Flow)</span>
-            </button>
+            <div>
+              <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wide">
+                Company Order Reviews &amp; Ratings
+              </h4>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Verified delivery ratings and reviews from registered companies will appear here once orders are dispatched and received.
+              </p>
+            </div>
           </div>
         )}
 
@@ -2882,7 +2677,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
 
                   <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
                     <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                    <span>Verified Press Run</span>
+                    <span>Verified Company Order</span>
                   </span>
                 </div>
 
@@ -2906,7 +2701,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                 )}
               </div>
 
-              {/* Review Author & Press Footer */}
+              {/* Review Author & Company Footer */}
               <div className="pt-3 border-t border-slate-100 space-y-2">
                 <div className="flex items-center justify-between text-[11px]">
                   <div>
@@ -2914,7 +2709,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                       {rev.companyName}
                     </span>
                     <span className="text-slate-500 block text-[10px]">
-                      {rev.customerName} · {rev.pressModel || 'Sheetfed Offset'}
+                      {rev.customerName} · {rev.pressModel || 'Company Equipment'}
                     </span>
                   </div>
                   <span className="text-[10px] font-mono text-slate-400 shrink-0">

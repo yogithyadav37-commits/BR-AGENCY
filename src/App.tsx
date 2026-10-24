@@ -23,8 +23,7 @@ import {
   INITIAL_INVOICES, 
   DEFAULT_PRICING_CONFIG,
   INITIAL_STOCK_INVENTORY,
-  INITIAL_STOCK_REQUESTS,
-  SAMPLE_CUSTOMERS
+  INITIAL_STOCK_REQUESTS
 } from './data/mockData';
 import { 
   Order, 
@@ -526,7 +525,20 @@ export default function App() {
 
   // Handler: Simulate a sample order for analytics demonstration
   const handleAddSampleOrder = () => {
-    const cust = SAMPLE_CUSTOMERS[Math.floor(Math.random() * SAMPLE_CUSTOMERS.length)];
+    const cust: CustomerProfile = activeCustomer || (customers.length > 0 ? customers[0] : {
+      id: 'cust_direct_company',
+      companyName: 'General Commercial Graphics Pvt. Ltd.',
+      contactPerson: 'Operations Director',
+      email: 'operations@graphics.in',
+      phone: '+91 98100 12345',
+      address: 'Plot 12, Industrial Area',
+      city: 'New Delhi',
+      state: 'Delhi',
+      postalCode: '110020',
+      gstNumber: '07AABCG1234F1Z5',
+      pressModel: 'Offset Equipment',
+      paymentTerms: 'Net 30'
+    });
     const orderNum = `ORD-2026-${Math.floor(1000 + Math.random() * 9000)}`;
     const invNum = `INV-2026-${Math.floor(1000 + Math.random() * 9000)}`;
     const newOrdId = `ord_${Date.now()}`;
@@ -791,6 +803,7 @@ export default function App() {
             onUpdateStockRequestStatus={handleUpdateStockRequestStatus}
             userRole={userRole}
             onExit={() => setActiveTab('order')}
+            activeCustomer={activeCustomer}
           />
         )}
 
@@ -911,7 +924,7 @@ export default function App() {
           <div className="flex items-center gap-2">
             <span className="font-extrabold text-slate-900">BR AGENCY</span>
             <span aria-hidden="true">·</span>
-            <span>Printing Press Ink Supplies · Commercial Sheetfed &amp; Carton Offset</span>
+            <span>Company Ink Supplies · Commercial Sheetfed &amp; Carton Offset</span>
           </div>
 
           <div className="flex items-center gap-6 font-mono text-[11px] text-slate-400">

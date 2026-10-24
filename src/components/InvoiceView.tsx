@@ -74,7 +74,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
             Commercial Invoice Management & Receivables
           </h1>
           <p className="mt-1 text-sm text-slate-600">
-            Tax invoice generation, remittance tracking, GST compliance records, and credit settlement for printing press clients.
+            Tax invoice generation, remittance tracking, GST compliance records, and credit settlement for company clients.
           </p>
         </div>
 
@@ -157,7 +157,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by Invoice #, Order #, or Printing Press..."
+              placeholder="Search by Invoice #, Order #, or Company..."
               className="w-full text-xs pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900"
             />
           </div>
@@ -202,7 +202,7 @@ export const InvoiceView: React.FC<InvoiceViewProps> = ({
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[11px]">
                 <th className="py-3 px-4">Invoice #</th>
-                <th className="py-3 px-4">Printing Press Client</th>
+                <th className="py-3 px-4">Company Client</th>
                 <th className="py-3 px-4">Issue / Due Date</th>
                 <th className="py-3 px-4 font-mono">Order Ref</th>
                 <th className="py-3 px-4 text-right font-mono">Invoice Total</th>

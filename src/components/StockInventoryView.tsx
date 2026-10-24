@@ -89,10 +89,10 @@ const PROCUREMENT_SUPPLIERS = [
   {
     id: 'national_packaging',
     name: 'National Corrugated & Metal Packaging Industries',
-    category: 'Startup Press Boxes (Min 2kg / 5kg), Vacuum Cans (2.5kg) & Pails',
+    category: 'Startup Company Boxes (Min 2kg / 5kg), Vacuum Cans (2.5kg) & Pails',
     leadTime: '24 Hours',
     dockContact: 'Pooja Verma (+91 98711 88203)',
-    rating: 'Airtight Poly-Lined Press Boxes (Min 2kg) & Cans'
+    rating: 'Airtight Poly-Lined Company Boxes (Min 2kg) & Cans'
   },
   {
     id: 'inhouse_milling',
@@ -108,7 +108,7 @@ const WAREHOUSE_BAYS = [
   'Naraina Bay 2 - Main Finished Goods Pallet Rack',
   'Naraina Bay 4 - Temperature Controlled Vault',
   'Central Packaging Staging Area (Dock 1)',
-  'Emergency Press Dispatch Reserve Bay'
+  'Emergency Company Dispatch Reserve Bay'
 ];
 
 export const StockInventoryView: React.FC<StockInventoryViewProps> = ({
@@ -286,7 +286,7 @@ export const StockInventoryView: React.FC<StockInventoryViewProps> = ({
     setRestockBatchLot(`LOT-${series === 'BIO_SPEED' ? 'BS' : 'BP'}-${Date.now().toString().slice(-4)}`);
     setPoNumber(`PO-2026-${Math.floor(1000 + Math.random() * 9000)}`);
     setRestockBay(WAREHOUSE_BAYS[0]);
-    setRestockNote(`Startup production restock for ${boxSize === 'box_2kg' ? '2.0 kg' : '5.0 kg'} corrugated press box`);
+    setRestockNote(`Startup production restock for ${boxSize === 'box_2kg' ? '2.0 kg' : '5.0 kg'} corrugated box`);
     setPoCopied(false);
   };
 
@@ -519,7 +519,7 @@ Notes           : ${restockNote || 'Standard commercial offset quality certifica
             type="button"
             onClick={() => handleOpenStartupBoxRestock('box_2kg')}
             className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-cyan-950 bg-cyan-100 hover:bg-cyan-200 border border-cyan-300 rounded-lg shadow-2xs transition-colors cursor-pointer"
-            title="Quick restock 2.0 kg corrugated press boxes (startup package size)"
+            title="Quick restock 2.0 kg corrugated boxes (startup package size)"
           >
             <Boxes className="w-3.5 h-3.5 text-cyan-700" />
             <span>+ Restock 2kg Box</span>
@@ -529,7 +529,7 @@ Notes           : ${restockNote || 'Standard commercial offset quality certifica
             type="button"
             onClick={() => handleOpenStartupBoxRestock('box_5kg')}
             className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-amber-950 bg-amber-100 hover:bg-amber-200 border border-amber-300 rounded-lg shadow-2xs transition-colors cursor-pointer"
-            title="Quick restock 5.0 kg corrugated press boxes (startup package size)"
+            title="Quick restock 5.0 kg corrugated boxes (startup package size)"
           >
             <Boxes className="w-3.5 h-3.5 text-amber-700" />
             <span>+ Restock 5kg Box</span>

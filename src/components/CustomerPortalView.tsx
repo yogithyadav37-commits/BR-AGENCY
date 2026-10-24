@@ -643,7 +643,7 @@ export const CustomerPortalView: React.FC<CustomerPortalViewProps> = ({
                 <div className="flex items-center gap-2">
                   <CreditCard className="w-4 h-4 text-cyan-600 shrink-0" />
                   <span>
-                    Direct RTGS/NEFT payments to: <strong>BR Agency Press Supplies</strong> · HDFC Bank A/C: <span className="font-mono text-slate-800">50200088192031</span> (IFSC: HDFC0001203)
+                    Direct RTGS/NEFT payments to: <strong>BR Agency Company Supplies</strong> · HDFC Bank A/C: <span className="font-mono text-slate-800">50200088192031</span> (IFSC: HDFC0001203)
                   </span>
                 </div>
                 <span className="text-[11px] text-slate-500">
@@ -759,7 +759,7 @@ export const CustomerPortalView: React.FC<CustomerPortalViewProps> = ({
                   <span>Verified Ink Supply Agreement</span>
                 </p>
                 <p className="text-[11px] text-cyan-800">
-                  All press inks conform to ISO 2846-1 colorimetry and ISO 12647-2 press performance standards. Batch certificates are generated with every shipment.
+                  All inks conform to ISO 2846-1 colorimetry and ISO 12647-2 company performance standards. Batch certificates are generated with every shipment.
                 </p>
               </div>
             </div>
