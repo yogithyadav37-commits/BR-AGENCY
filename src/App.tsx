@@ -59,6 +59,34 @@ export default function App() {
     return 'customer';
   });
 
+  // Inverted Theme State (defaults to 'dark' per user request)
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    try {
+      const saved = localStorage.getItem('bragency_theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+    } catch (e) {
+      console.error(e);
+    }
+    return 'dark';
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('bragency_theme', theme);
+    } catch (e) {
+      console.error(e);
+    }
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const handleToggleTheme = () => {
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
   // Owner Access Security PIN (Default: 1234)
   const [ownerPin, setOwnerPin] = useState<string>(() => {
     try {
@@ -695,7 +723,7 @@ export default function App() {
   ).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#090D16] text-slate-900 dark:text-slate-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] transition-colors">
       {/* Top Bar Navigation with Mode & Role Switcher */}
       <Navbar
         activeTab={activeTab}
@@ -728,6 +756,8 @@ export default function App() {
         activeCustomer={activeCustomer}
         onOpenCustomerAuth={() => setIsCustomerAuthOpen(true)}
         onSignOutCustomer={handleSignOutCustomer}
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
       />
 
       {/* Main Content Workspace */}

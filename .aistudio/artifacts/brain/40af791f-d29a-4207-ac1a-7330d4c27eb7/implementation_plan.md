@@ -1,51 +1,58 @@
-# Implementation Plan: Remove Demo Accounts & Display as Company
+# Implementation Plan: UI Immersive Overhaul, B2B Commercial Simplicity & Inverted Theme
+
+## Overview
+Elevated the BR Agency Ink Supplies portal to deliver a tangible, authentic, and clean commercial printing ink ordering experience. Inverted the theme to deep obsidian industrial dark mode with high-contrast tactile CMYK accents, synchronized with HTML `.dark` class, and equipped with an instant header theme inverter toggle.
+
+---
 
 ## Completed Tasks
-- **Purged Demo Accounts & Prefill Buttons:**
-  - Cleared `SAMPLE_CUSTOMERS` in `src/data/mockData.ts` to `[]` (purged hardcoded accounts such as Apex Litho, Horizon Packaging, Regent Fine Graphics).
-  - Replaced hardcoded demo pre-fill shortcuts and demo preloaded values in `OrderIntakeForm.tsx` and `RequestStockView.tsx`.
-  - Removed demo order simulation buttons (`handleCreateSampleDeliveredOrder` and "Simulate Delivered Order (Test Review Flow)").
-  - Form now exclusively uses live logged-in company sessions (via mobile OTP) and genuine user-registered companies.
 
-- **Terminology Shift from "Press" to "Company":**
-  - **Navbar:** Subtitle updated to "Company Inks"; sign-out tooltip updated to "Sign out of company account".
-  - **Order Intake Portal (`OrderIntakeForm.tsx`):**
-    - "Press Inks" / "Press Supply" -> "Company Supply" / "Company Inks".
-    - "03. Press Technical Specification" -> "03. Company Technical Specification".
-    - "Press Machine Model" -> "Production Machinery / Equipment Model".
-    - "Purchase Order / Press Job Ref" -> "Purchase Order / Company Job Ref".
-    - "04. Press Account & Billing Identity" -> "04. Company Account".
-    - "Pressroom Voice" & "Pressroom Experience" -> "Company Voice" & "Company Experience".
-    - "Verified Press Run" -> "Verified Company Order".
-    - "Active Press Batches in Fulfillment" -> "Active Company Batches in Fulfillment".
-  - **Stock Requests (`RequestStockView.tsx`):**
-    - "Critical Press Stoppage" -> "Critical Production Stoppage".
-    - "Immediate Press Run" -> "Immediate Production Run".
-    - Removed "Demo Fill: Pragati / Parksons" button pills.
-    - Synchronized with active company customer profile.
-  - **Real-Time Tracking (`TrackingView.tsx`):**
-    - "Dispersion to Pressroom Dock" -> "Dispersion to Company Dock".
-    - "Press Delivery Dock" -> "Company Delivery Dock".
-    - "Your Pressroom Delivery Review" -> "Your Company Delivery Review".
-    - Search placeholder updated to "Search Order #, Company, Batch, Tracking...".
-  - **Delivery Feedback Modal (`OrderFeedbackModal.tsx`):**
-    - "Overall Pressroom Satisfaction" -> "Overall Company Satisfaction".
-    - "Press Run & Tack" -> "Print Run & Tack".
-    - "Punctuality to press dock" -> "Punctuality to company dock".
-    - "Pressroom Operator Comments" -> "Company Operator Comments".
-    - "Submit Press Review" -> "Submit Company Review".
-  - **Invoice Views & PDF Invoices (`InvoiceDetailModal.tsx`, `invoicePdfGenerator.ts`, `InvoiceView.tsx`):**
-    - "BR Agency Press Inks" -> "BR Agency Company Inks".
-    - "Printing Press Client" -> "Company Client".
-    - "Press & Dispatch Standards" / "Press: ..." -> "Equipment & Dispatch Standards" / "Equipment: ...".
-    - "Standard Press Supply Terms" -> "Standard Company Supply Terms".
-  - **Inventory & Operations (`StockInventoryView.tsx`, `SupplierDashboard.tsx`, `CustomerPortalView.tsx`):**
-    - "Startup Press Boxes" / "Poly-Lined Press Boxes" -> "Startup Company Boxes" / "Poly-Lined Company Boxes".
-    - "Emergency Press Dispatch Reserve Bay" -> "Emergency Company Dispatch Reserve Bay".
-    - "Real-time pressroom order queue" -> "Real-time company order queue".
-    - "BR Agency Press Supplies" -> "BR Agency Company Supplies".
-  - **Application Shell & Meta (`App.tsx`, `index.html`):**
-    - "Printing Press Ink Supplies" footer and index.html headers replaced with "Company Ink Supplies".
+### 1. Navigation & Brand Identity (`Navbar.tsx`)
+- **Wordmark & Tactile Swatch Bar**: Clean, robust typographic wordmark `BR AGENCY` paired with a physical 4-color CMYK process ribbon (`#0099FF`, `#E6007A`, `#FFD700`, `#111827`) and quiet unboxed `· Inks` designation.
+- **Removed Static Mode Pills**: Replaced prominent colored pill badges (`Owner Mode Active` / `Company Ordering View`) with quiet, professional text labels.
+- **Unboxed Tabular Counts**: Replaced badge pill counters for `Request Stock` and `Stock Inventory` with crisp monospace numbers `(${count})`.
+- **Theme Inverter Toggle**: Added quick Invert Theme control button (☀️ / 🌙) directly in the navigation actions bar.
+
+### 2. Inverted Theme Engine (`src/index.css`, `App.tsx`, `index.html`)
+- **Default Inverted Theme (Dark)**: Configured deep obsidian canvas (`#090D16`), structured card surfaces (`#121826`), refined borders (`#1F2B3F`), and high-contrast light typography (`#F8FAFC`).
+- **Input & Form Theming**: Styled all text inputs, steppers, select menus, and modals for high legibility in dark mode.
+- **Persistent Session**: Synchronized `theme` state with `localStorage` and `html.dark` class to avoid flash of light mode.
+- **Vibrant CMYK & Accent Tints**: Calibrated high-clarity Cyan, Magenta, Yellow, Emerald, and Amber indicators against dark surfaces.
+
+### 3. Commercial Order Intake Header (`OrderIntakeForm.tsx`)
+- **Immersive Industrial Panel**: Dark slate header (`bg-slate-900 border-slate-800`) highlighting ISO 12647-2 & 2846-1 quality compliance.
+- **Physical CMYK Pigment Swatch Ribbon**: Standardized pigment color references (Cyan P.B. 15:3, Magenta P.R. 57:1, Yellow P.Y. 12, Black P.Blk. 7).
+- **Streamlined 1-Click Presets**: Quick packaging selections (`Standard CMYK 2.5kg Cans`, `Carton Packaging 15kg Pails`, `Startup Boxes 2kg/5kg`) respecting warehouse inventory ceilings.
+
+### 4. Base Ink System Formulation Selection (Section 1)
+- **BIO SPEED (Sheetfed Lithography & Publication)**:
+  - Setting Time: 6–9 min
+  - Inkometer Tack (32°C): 11.0–12.2
+  - Binder Chemistry: 82% Bio-Renewable Oil
+  - Anti-skinning overnight duct stability up to 18,000+ iph
+- **BIO PACK (Food & Folding Carton Packaging)**:
+  - Setting Time: 8–12 min
+  - Inkometer Tack (32°C): 9.8–11.0
+  - Formulation Standard: MOSH/MOAH 0% (Low-Migration, Low-Odor)
+  - Maximum rub resistance for folding boxboard cartons and cosmetics
+
+### 5. Process CMYK Volume Matrix (Section 2)
+- High-contrast pigment chips with authentic DIN/ISO process color representations.
+- Packaging size selectors (2.5kg Vacuum Can, 15kg Metal Pail, 2kg/5kg Sealed Boxes) displaying real-time unit stock.
+- Clean `-` / `+` steppers displaying unit counts and calculated net kilograms.
+- Enforced live inventory caps with direct stock request links when stock is depleted.
+- Consistent Company terminology maintained throughout (no "press" occurrences).
+
+### 6. Official Commercial Purchase Specification Ticket (Right Column)
+- Formatted as an authentic commercial purchase order ticket with timestamp and net weight.
+- Dedicated freight tier progress bar indicating proximity to the 300 kg free transit threshold.
+- Itemized CMYK allocation breakdown table.
+- Direct mathematical breakdown: Subtotal, Volume Tier Discount, Industrial GST 18% (HSN 3215), and Logistics Freight.
+- Prominent "Confirm & Issue Order" CTA button.
+
+---
 
 ## Verification
-- Both `lint_applet` (`tsc --noEmit`) and `compile_applet` (Vite build) completed with 0 errors.
+- `lint_applet` (`tsc --noEmit`): Passed with 0 errors.
+- `compile_applet` (Vite production build): Build succeeded with 0 errors.
+- `restart_dev_server`: Executed cleanly.

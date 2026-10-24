@@ -1020,52 +1020,78 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      {/* Intro Header */}
+      {/* Immersive Industrial Intro Header */}
       <div className="mb-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-medium text-slate-500 mb-1">
-              <span>Company Supply</span>
+        <div className="p-6 bg-slate-900 text-white rounded-2xl shadow-sm border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-xs font-mono text-cyan-400">
+              <span className="font-semibold uppercase tracking-wider">BR Agency Industrial Formulation</span>
               <span aria-hidden="true">·</span>
-              <span>BIO SPEED & BIO PACK</span>
-              <span aria-hidden="true">·</span>
-              <span>CMYK Offset Formulations</span>
+              <span className="text-slate-400">ISO 12647-2 &amp; 2846-1 Certified</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Commercial Ink Intake & Order Specification
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              Commercial Ink Intake &amp; Order Specification
             </h1>
-            <p className="mt-1 text-sm text-slate-600 max-w-2xl">
-              Configure process ink batches with custom container packaging, technical tack calibration, real-time volume pricing, and automated tax invoicing.
+            <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              Precision process inks formulated with high-grade vegetable bio-oils. Select container sizes, calibrate tack for your equipment, and configure instant delivery dispatch.
             </p>
+
+            {/* CMYK Tactile Color Swatch Ribbon */}
+            <div className="flex flex-wrap items-center gap-4 pt-2 text-[11px] font-mono text-slate-400">
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-xs bg-[#0099FF] shadow-xs" />
+                <span className="text-slate-200 font-semibold">Cyan</span>
+                <span className="text-slate-500">P.B. 15:3</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-xs bg-[#E6007A] shadow-xs" />
+                <span className="text-slate-200 font-semibold">Magenta</span>
+                <span className="text-slate-500">P.R. 57:1</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-xs bg-[#FFD700] shadow-xs" />
+                <span className="text-slate-200 font-semibold">Yellow</span>
+                <span className="text-slate-500">P.Y. 12</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-xs bg-[#111827] border border-slate-700 shadow-xs" />
+                <span className="text-slate-200 font-semibold">Black</span>
+                <span className="text-slate-500">P.Blk. 7</span>
+              </div>
+            </div>
           </div>
 
-          {/* Quick Presets Bar */}
-          <div className="flex items-center gap-2 bg-slate-100/80 p-1.5 rounded-lg border border-slate-200 text-xs shrink-0">
-            <span className="text-slate-500 font-medium px-2 flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-slate-400" />
-              Presets:
+          {/* Quick Order Presets */}
+          <div className="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/80 shrink-0 space-y-2">
+            <span className="text-[11px] font-mono font-medium text-slate-400 uppercase tracking-wider block">
+              Quick Order Presets
             </span>
-            <button
-              type="button"
-              onClick={() => applyPreset('balanced')}
-              className="px-2.5 py-1 font-medium bg-white text-slate-800 rounded shadow-xs hover:bg-slate-50 transition-colors"
-            >
-              Standard CMYK (2.5kg)
-            </button>
-            <button
-              type="button"
-              onClick={() => applyPreset('packaging')}
-              className="px-2.5 py-1 font-medium text-slate-600 hover:text-slate-900 rounded hover:bg-white/60 transition-colors"
-            >
-              Food Carton (15kg Pails)
-            </button>
-            <button
-              type="button"
-              onClick={() => applyPreset('boxes')}
-              className="px-2.5 py-1 font-medium text-slate-600 hover:text-slate-900 rounded hover:bg-white/60 transition-colors"
-            >
-              Startup Boxes (Min 2.0kg)
-            </button>
+            <div className="flex flex-col gap-1.5">
+              <button
+                type="button"
+                onClick={() => applyPreset('balanced')}
+                className="px-3.5 py-1.5 text-xs font-semibold bg-white text-slate-900 rounded-lg hover:bg-slate-100 transition-colors text-left flex items-center justify-between gap-4 shadow-xs cursor-pointer"
+              >
+                <span>Standard CMYK (2.5kg Cans)</span>
+                <span className="font-mono text-[10px] text-slate-500">10 kg</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => applyPreset('packaging')}
+                className="px-3.5 py-1.5 text-xs font-semibold bg-slate-700/70 hover:bg-slate-700 text-slate-200 rounded-lg transition-colors text-left flex items-center justify-between gap-4 cursor-pointer"
+              >
+                <span>Carton Packaging (15kg Pails)</span>
+                <span className="font-mono text-[10px] text-slate-400">60 kg</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => applyPreset('boxes')}
+                className="px-3.5 py-1.5 text-xs font-semibold bg-slate-700/70 hover:bg-slate-700 text-slate-200 rounded-lg transition-colors text-left flex items-center justify-between gap-4 cursor-pointer"
+              >
+                <span>Startup Boxes (2kg / 5kg)</span>
+                <span className="font-mono text-[10px] text-slate-400">14 kg</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1140,13 +1166,13 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             <div className="flex items-center justify-between mb-4">
               <div>
                 <span className="text-xs font-mono font-medium text-slate-400 uppercase tracking-wider">
-                  01. Ink System Series
+                  01. Ink System Formulation
                 </span>
                 <h2 className="text-lg font-bold text-slate-900">
-                  Select Base Ink Formulation
+                  Select Base Ink Series
                 </h2>
               </div>
-              <span className="text-xs text-slate-500 font-medium">
+              <span className="text-xs font-mono font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">
                 {activeSeries.vegetableOilPct}
               </span>
             </div>
@@ -1157,20 +1183,20 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                 onClick={() => setSelectedSeries('BIO_SPEED')}
                 className={`relative p-5 rounded-xl border-2 cursor-pointer transition-all ${
                   selectedSeries === 'BIO_SPEED'
-                    ? 'border-slate-900 bg-slate-900/5'
+                    ? 'border-slate-900 bg-slate-900/5 shadow-xs'
                     : 'border-slate-200 bg-white hover:border-slate-300'
                 }`}
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-cyan-600">
-                      Sheetfed Lithography
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-cyan-700 font-mono">
+                      Sheetfed Lithography &amp; Publication
                     </span>
-                    <h3 className="text-xl font-extrabold text-slate-900 tracking-tight mt-0.5">
+                    <h3 className="text-xl font-black text-slate-900 tracking-tight mt-0.5">
                       BIO SPEED
                     </h3>
                   </div>
-                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${
                     selectedSeries === 'BIO_SPEED'
                       ? 'border-slate-900 bg-slate-900 text-white'
                       : 'border-slate-300'
@@ -1180,15 +1206,23 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                 </div>
 
                 <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                  Ultra-fast setting (6–9 min), high gloss, anti-skinning overnight duct stability. Engineered for high-speed commercial presses up to 18,000+ iph.
+                  Ultra-fast setting vegetable bio-oil system with high gloss and anti-skinning overnight duct stability. Engineered for high-speed commercial presses up to 18,000+ iph.
                 </p>
 
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                  <span>Setting: 6–9 min</span>
-                  <span aria-hidden="true">·</span>
-                  <span>Tack: 11.0–12.2</span>
-                  <span aria-hidden="true">·</span>
-                  <span className="font-semibold text-slate-700">82% Bio-Oil</span>
+                {/* Tactile Technical Spec Grid */}
+                <div className="mt-4 pt-3 border-t border-slate-200/80 grid grid-cols-3 gap-2 text-center font-mono">
+                  <div className="p-2 bg-slate-50 rounded-lg border border-slate-200/60">
+                    <span className="text-[10px] text-slate-400 uppercase block">Setting</span>
+                    <span className="text-xs font-bold text-slate-900 mt-0.5 block">6–9 min</span>
+                  </div>
+                  <div className="p-2 bg-slate-50 rounded-lg border border-slate-200/60">
+                    <span className="text-[10px] text-slate-400 uppercase block">Tack (32°C)</span>
+                    <span className="text-xs font-bold text-slate-900 mt-0.5 block">11.0–12.2</span>
+                  </div>
+                  <div className="p-2 bg-slate-50 rounded-lg border border-slate-200/60">
+                    <span className="text-[10px] text-slate-400 uppercase block">Vehicle</span>
+                    <span className="text-xs font-bold text-cyan-800 mt-0.5 block">82% Bio-Oil</span>
+                  </div>
                 </div>
               </div>
 
@@ -1197,20 +1231,20 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                 onClick={() => setSelectedSeries('BIO_PACK')}
                 className={`relative p-5 rounded-xl border-2 cursor-pointer transition-all ${
                   selectedSeries === 'BIO_PACK'
-                    ? 'border-slate-900 bg-slate-900/5'
+                    ? 'border-slate-900 bg-slate-900/5 shadow-xs'
                     : 'border-slate-200 bg-white hover:border-slate-300'
                 }`}
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
-                      Food & Carton Packaging
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 font-mono">
+                      Food &amp; Folding Carton Packaging
                     </span>
-                    <h3 className="text-xl font-extrabold text-slate-900 tracking-tight mt-0.5">
+                    <h3 className="text-xl font-black text-slate-900 tracking-tight mt-0.5">
                       BIO PACK
                     </h3>
                   </div>
-                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${
                     selectedSeries === 'BIO_PACK'
                       ? 'border-slate-900 bg-slate-900 text-white'
                       : 'border-slate-300'
@@ -1220,15 +1254,23 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                 </div>
 
                 <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                  Low-migration, low-odor mineral-oil-free (MOSH/MOAH compliant) system. High rub resistance for folding boxboard cartons and cosmetic boxes.
+                  Low-migration, low-odor mineral-oil-free (MOSH/MOAH compliant) system. Maximum rub resistance for folding boxboard cartons, pharmaceuticals, and cosmetic packaging.
                 </p>
 
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                  <span>Setting: 8–12 min</span>
-                  <span aria-hidden="true">·</span>
-                  <span>Tack: 9.8–11.0</span>
-                  <span aria-hidden="true">·</span>
-                  <span className="font-semibold text-emerald-700">MOSH/MOAH Free</span>
+                {/* Tactile Technical Spec Grid */}
+                <div className="mt-4 pt-3 border-t border-slate-200/80 grid grid-cols-3 gap-2 text-center font-mono">
+                  <div className="p-2 bg-slate-50 rounded-lg border border-slate-200/60">
+                    <span className="text-[10px] text-slate-400 uppercase block">Setting</span>
+                    <span className="text-xs font-bold text-slate-900 mt-0.5 block">8–12 min</span>
+                  </div>
+                  <div className="p-2 bg-slate-50 rounded-lg border border-slate-200/60">
+                    <span className="text-[10px] text-slate-400 uppercase block">Tack (32°C)</span>
+                    <span className="text-xs font-bold text-slate-900 mt-0.5 block">9.8–11.0</span>
+                  </div>
+                  <div className="p-2 bg-slate-50 rounded-lg border border-slate-200/60">
+                    <span className="text-[10px] text-slate-400 uppercase block">Standard</span>
+                    <span className="text-xs font-bold text-emerald-700 mt-0.5 block">MOSH/MOAH 0%</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1239,22 +1281,22 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             <div className="flex items-center justify-between mb-4">
               <div>
                 <span className="text-xs font-mono font-medium text-slate-400 uppercase tracking-wider">
-                  02. Color & Packaging Allocation
+                  02. Color &amp; Packaging Allocation
                 </span>
                 <h2 className="text-lg font-bold text-slate-900">
                   Process CMYK Volume Matrix
                 </h2>
               </div>
               <div className="flex items-center gap-2">
-                <div className="text-xs text-slate-500 flex items-center gap-1.5">
+                <div className="text-xs text-slate-500 flex items-center gap-1.5 font-mono">
                   <Package className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Enforcing live warehouse stock</span>
+                  <span>Warehouse live stocks</span>
                 </div>
                 {userRole === 'owner' && (
                   <button
                     type="button"
                     onClick={onOpenPriceSettings}
-                    className="px-2 py-0.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded flex items-center gap-1 transition-colors"
+                    className="px-2.5 py-1 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-md flex items-center gap-1 transition-colors cursor-pointer"
                     title="Configure base price per kg"
                   >
                     <Tag className="w-3 h-3 text-cyan-600" />
@@ -1265,18 +1307,18 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             </div>
 
             {/* Warehouse Stock Alert Notice */}
-            <div className="mb-4 p-3 bg-cyan-50/60 border border-cyan-200 rounded-xl text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div className="flex items-center gap-2 text-cyan-900">
-                <Package className="w-4 h-4 text-cyan-700 shrink-0" />
+            <div className="mb-4 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2 text-slate-700">
+                <Package className="w-4 h-4 text-slate-600 shrink-0" />
                 <span>
-                  <strong>Strict Inventory Mode:</strong> Quantities are capped to current warehouse stock. If your press requires more volume, submit a stock request.
+                  <strong>Strict Inventory Cap:</strong> Quantities are synchronized with current warehouse inventory. If your company requires more volume, submit a stock request.
                 </span>
               </div>
               {onNavigateToRequestStock && (
                 <button
                   type="button"
                   onClick={() => onNavigateToRequestStock(selectedSeries)}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-cyan-800 hover:text-cyan-950 underline underline-offset-2 shrink-0"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-cyan-800 hover:text-cyan-950 underline underline-offset-2 shrink-0 cursor-pointer"
                 >
                   <span>Request More Stock</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
@@ -1284,7 +1326,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
               )}
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               {INK_COLORS.map(col => {
                 const alloc = allocations[col.name];
                 const unitPrice = selectedSeries === 'BIO_SPEED' 
@@ -1307,13 +1349,13 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                       alloc.selected 
                         ? isOutOfStock
                           ? 'border-rose-200 bg-rose-50/20'
-                          : 'border-slate-300 bg-slate-50/50' 
-                        : 'border-slate-200 bg-white opacity-60'
+                          : 'border-slate-300 bg-white shadow-2xs' 
+                        : 'border-slate-200 bg-slate-50/50 opacity-60'
                     }`}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      {/* Color Tag & Toggle */}
-                      <div className="flex items-center gap-3 min-w-[160px]">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      {/* Color Swatch & Specification */}
+                      <div className="flex items-center gap-3 min-w-[190px]">
                         <input
                           type="checkbox"
                           checked={alloc.selected}
@@ -1321,7 +1363,7 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                           className="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer"
                         />
                         <div 
-                          className="w-4 h-8 rounded-sm shrink-0 border border-black/10 shadow-xs" 
+                          className="w-5 h-10 rounded-sm shrink-0 border border-slate-300 shadow-2xs flex flex-col justify-end p-0.5" 
                           style={{ backgroundColor: col.hex }} 
                         />
                         <div>
@@ -1329,32 +1371,32 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                             <span className="font-bold text-sm text-slate-900">
                               {col.name}
                             </span>
-                            <span className="text-xs font-mono text-slate-400">
-                              ({col.code})
+                            <span className="text-xs font-mono font-semibold text-slate-500">
+                              [{col.code}]
                             </span>
                           </div>
-                          <span className="text-[11px] text-slate-500 block">
+                          <span className="text-[11px] font-mono text-slate-500 block">
                             {col.pigmentCode}
                           </span>
                         </div>
                       </div>
 
                       {/* Container Format Selector */}
-                      <div className="flex-1 max-w-xs">
+                      <div className="flex-1 max-w-sm">
                         <label className="block text-[11px] font-medium text-slate-500 mb-1">
-                          Packaging Size
+                          Packaging Format
                         </label>
                         <select
                           disabled={!alloc.selected}
                           value={alloc.containerId}
                           onChange={(e) => updateAllocation(col.name, 'containerId', e.target.value as ContainerSizeId)}
-                          className="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 disabled:opacity-50"
+                          className="w-full text-xs font-medium bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-900 focus:outline-none focus:bg-white focus:ring-1 focus:ring-slate-900 disabled:opacity-50 cursor-pointer"
                         >
                           {CONTAINER_OPTIONS.map(opt => {
                             const optStock = getAvailableStockUnits(selectedSeries, col.name, opt.id);
                             return (
                               <option key={opt.id} value={opt.id}>
-                                {opt.label} ({opt.kgPerUnit} kg) {optStock === 0 ? '· Out of Stock' : `· (${optStock} in stock)`}
+                                {opt.label} ({opt.kgPerUnit} kg) {optStock === 0 ? '· Out of Stock' : `· (${optStock} units available)`}
                               </option>
                             );
                           })}
@@ -1362,19 +1404,19 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                       </div>
 
                       {/* Quantity Stepper with Stock Enforcement */}
-                      <div className="w-32">
+                      <div className="w-36">
                         <div className="flex items-center justify-between text-[11px] font-medium text-slate-500 mb-1">
-                          <span>Units to Order</span>
+                          <span>Units</span>
                           <span className="font-mono text-[10px] text-slate-400">
                             Max: {availableUnits}
                           </span>
                         </div>
-                        <div className="flex items-center border border-slate-200 rounded-lg bg-white overflow-hidden">
+                        <div className="flex items-center border border-slate-200 rounded-lg bg-white overflow-hidden shadow-2xs">
                           <button
                             type="button"
                             disabled={!alloc.selected || alloc.containersCount <= 0}
                             onClick={() => updateAllocation(col.name, 'containersCount', Math.max(0, alloc.containersCount - 1))}
-                            className="w-8 py-1 text-slate-600 hover:bg-slate-100 disabled:opacity-30 text-sm font-semibold"
+                            className="w-9 py-1.5 text-slate-700 hover:bg-slate-100 disabled:opacity-30 text-sm font-bold cursor-pointer transition-colors"
                           >
                             -
                           </button>
@@ -1385,13 +1427,13 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                             max={availableUnits}
                             value={alloc.containersCount}
                             onChange={(e) => updateAllocation(col.name, 'containersCount', Math.max(0, parseInt(e.target.value) || 0))}
-                            className="w-16 text-center text-xs font-mono font-medium text-slate-900 focus:outline-none border-x border-slate-100 tabular-nums disabled:bg-slate-50"
+                            className="w-18 text-center text-xs font-mono font-bold text-slate-900 focus:outline-none border-x border-slate-200 tabular-nums disabled:bg-slate-50 py-1"
                           />
                           <button
                             type="button"
                             disabled={!alloc.selected || alloc.containersCount >= availableUnits || isOutOfStock}
                             onClick={() => updateAllocation(col.name, 'containersCount', alloc.containersCount + 1)}
-                            className="w-8 py-1 text-slate-600 hover:bg-slate-100 disabled:opacity-30 text-sm font-semibold"
+                            className="w-9 py-1.5 text-slate-700 hover:bg-slate-100 disabled:opacity-30 text-sm font-bold cursor-pointer transition-colors"
                             title={alloc.containersCount >= availableUnits ? 'Cannot exceed available stock' : 'Add 1 unit'}
                           >
                             +
@@ -1400,11 +1442,11 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                       </div>
 
                       {/* Total Weight & Price */}
-                      <div className="text-right min-w-[110px]">
+                      <div className="text-right min-w-[120px]">
                         <span className="block text-[11px] font-mono text-slate-500 tabular-nums">
-                          {alloc.selected ? `${lineKg.toFixed(1)} kg` : '0 kg'} @ {pricingConfig.currencySymbol}{unitPrice.toFixed(2)}/kg
+                          {alloc.selected ? `${alloc.containersCount} × ${container.kgPerUnit}kg = ${lineKg.toFixed(1)} kg` : '0 kg'}
                         </span>
-                        <span className="block text-sm font-bold font-mono text-slate-900 tabular-nums">
+                        <span className="block text-sm font-bold font-mono text-slate-900 tabular-nums mt-0.5">
                           {pricingConfig.currencySymbol}{alloc.selected ? lineTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}
                         </span>
                       </div>
@@ -1412,28 +1454,28 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
 
                     {/* Stock Availability Footer Line */}
                     {alloc.selected && (
-                      <div className="mt-3 pt-2.5 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                      <div className="mt-3 pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[11px]">
                         <div className="flex items-center gap-2">
                           {isOutOfStock ? (
-                            <span className="inline-flex items-center gap-1 font-semibold text-rose-700 bg-rose-100/80 px-2 py-0.5 rounded text-[11px]">
+                            <span className="inline-flex items-center gap-1 font-semibold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded text-[11px]">
                               <AlertTriangle className="w-3 h-3 text-rose-600" />
                               <span>Out of Stock in Warehouse</span>
                             </span>
                           ) : isLowStock ? (
-                            <span className="inline-flex items-center gap-1 font-semibold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded text-[11px]">
+                            <span className="inline-flex items-center gap-1 font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded text-[11px]">
                               <AlertTriangle className="w-3 h-3 text-amber-600" />
-                              <span>Low Stock: Only {availableUnits} units available ({ (availableUnits * container.kgPerUnit).toFixed(1) } kg)</span>
+                              <span>Low Stock: {availableUnits} units available ({ (availableUnits * container.kgPerUnit).toFixed(1) } kg)</span>
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 font-medium text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded text-[11px]">
+                            <span className="inline-flex items-center gap-1 font-medium text-slate-600 text-[11px]">
                               <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                              <span>Warehouse Stock: {availableUnits} units ({ (availableUnits * container.kgPerUnit).toFixed(1) } kg available)</span>
+                              <span>Warehouse Inventory: <strong className="font-mono text-slate-800">{availableUnits} units</strong> ({ (availableUnits * container.kgPerUnit).toFixed(1) } kg)</span>
                             </span>
                           )}
 
                           {isAtMaxStock && (
                             <span className="text-slate-500 italic text-[11px]">
-                              (All available units selected)
+                              (Max warehouse units selected)
                             </span>
                           )}
                         </div>
@@ -1442,9 +1484,9 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                           <button
                             type="button"
                             onClick={() => onNavigateToRequestStock(selectedSeries, col.name)}
-                            className="inline-flex items-center gap-1 text-cyan-700 hover:text-cyan-900 font-bold underline underline-offset-2"
+                            className="inline-flex items-center gap-1 text-cyan-800 hover:text-cyan-950 font-bold underline underline-offset-2 cursor-pointer"
                           >
-                            <span>Need more {col.name}? Request Additional Stock</span>
+                            <span>Request More {col.name} Stock</span>
                             <ArrowUpRight className="w-3 h-3" />
                           </button>
                         )}
@@ -2309,14 +2351,46 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
         {/* Right Column: Order Summary & Instant Checkout Ticket (4 Cols) */}
         <div className="lg:col-span-4 sticky top-20">
           <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-base">
-                Commercial Order Ticket
-              </h3>
-              <span className="text-xs font-mono font-medium text-slate-500 tabular-nums">
-                {totalKg.toFixed(1)} kg total
-              </span>
+            {/* Ticket Header */}
+            <div className="pb-4 border-b border-slate-100 flex items-start justify-between">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block font-semibold">
+                  Commercial Purchase Spec
+                </span>
+                <h3 className="font-extrabold text-slate-900 text-base tracking-tight mt-0.5">
+                  Order Specification Ticket
+                </h3>
+              </div>
+              <div className="text-right font-mono">
+                <span className="text-xs font-bold text-slate-900 block tabular-nums">
+                  {totalKg.toFixed(1)} kg
+                </span>
+                <span className="text-[10px] text-slate-400 block">
+                  Net Weight
+                </span>
+              </div>
             </div>
+
+            {/* Free Freight Progress Bar (300kg Threshold) */}
+            {deliveryMethod === 'br_dedicated' && (
+              <div className="py-3 border-b border-slate-100">
+                <div className="flex items-center justify-between text-[11px] mb-1.5">
+                  <span className="text-slate-600 font-medium flex items-center gap-1">
+                    <Truck className="w-3.5 h-3.5 text-cyan-600" />
+                    <span>Free Freight Tier (≥300kg)</span>
+                  </span>
+                  <span className="font-mono text-[10px] font-bold text-slate-900">
+                    {totalKg >= 300 ? 'QUALIFIED (FREE)' : `${(300 - totalKg).toFixed(1)} kg to go`}
+                  </span>
+                </div>
+                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div 
+                    className={`h-full transition-all duration-300 ${totalKg >= 300 ? 'bg-emerald-500' : 'bg-cyan-500'}`}
+                    style={{ width: `${Math.min(100, (totalKg / 300) * 100)}%` }}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Selected Ink Items Breakdown */}
             <div className="py-4 space-y-2.5 max-h-56 overflow-y-auto pr-1">
@@ -2329,17 +2403,17 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
                   <div key={it.color} className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
                       <span 
-                        className="w-2.5 h-2.5 rounded-full inline-block"
-                        style={{ backgroundColor: INK_COLORS.find(c => c.name === it.color)?.hex }}
+                        className="w-2.5 h-2.5 rounded-xs inline-block shadow-2xs border border-black/10"
+                        style={{ backgroundColor: INK_COLORS.find(c => c.name === it.color)?.hex }} 
                       />
-                      <span className="font-medium text-slate-800">
-                        {it.color} ({activeSeries.name})
+                      <span className="font-bold text-slate-900">
+                        {it.color}
                       </span>
-                      <span className="text-slate-400 font-mono">
-                        · {it.containersCount}x {it.containerLabel}
+                      <span className="text-slate-500 font-mono text-[11px]">
+                        · {it.containersCount}x {it.containerLabel} ({it.totalKg.toFixed(1)}kg)
                       </span>
                     </div>
-                    <span className="font-mono font-semibold text-slate-900 tabular-nums">
+                    <span className="font-mono font-bold text-slate-900 tabular-nums">
                       {pricingConfig.currencySymbol}{it.totalPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                     </span>
                   </div>
@@ -2348,50 +2422,50 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             </div>
 
             {/* Volume Tier Indicator */}
-            <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 my-4 text-xs">
+            <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/80 my-3 text-xs">
               <div className="flex items-center justify-between text-slate-600 mb-1">
-                <span className="flex items-center gap-1 font-medium">
-                  <Scale className="w-3.5 h-3.5 text-slate-400" />
-                  Bulk Discount Status
+                <span className="flex items-center gap-1 font-semibold text-[11px]">
+                  <Scale className="w-3.5 h-3.5 text-slate-500" />
+                  Volume Tier Discount
                 </span>
-                <span className="font-semibold text-slate-900 font-mono">
-                  {discountPct > 0 ? `${discountPct}% APPLIED` : 'STANDARD RATE'}
+                <span className="font-bold text-slate-900 font-mono text-[11px]">
+                  {discountPct > 0 ? `${discountPct}% APPLIED` : 'STANDARD TIER'}
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 leading-tight">
                 {totalKg < 100 
                   ? `Add ${(100 - totalKg).toFixed(1)} kg more to unlock 5% volume discount.`
                   : totalKg < 250
-                  ? `Qualified for 5% off! Add ${(250 - totalKg).toFixed(1)} kg for 10% off.`
-                  : `Tier qualified for ${discountPct}% off enterprise company supply.`}
+                  ? `5% discount applied. Add ${(250 - totalKg).toFixed(1)} kg for 10% off.`
+                  : `Tier qualified for ${discountPct}% off enterprise commercial supply.`}
               </p>
             </div>
 
             {/* Delivery Destination Summary in Ticket */}
-            <div className="p-3 bg-cyan-50/50 border border-cyan-100 rounded-lg my-3 text-xs space-y-1">
-              <div className="flex items-center justify-between text-slate-500 text-[11px] font-semibold uppercase tracking-wider">
-                <span className="flex items-center gap-1 text-cyan-800">
-                  <MapPin className="w-3.5 h-3.5 text-cyan-600" />
-                  Dispatch Destination
+            <div className="p-3 bg-slate-50 border border-slate-200/80 rounded-lg my-3 text-xs space-y-1">
+              <div className="flex items-center justify-between text-slate-500 text-[10px] font-semibold uppercase tracking-wider font-mono">
+                <span className="flex items-center gap-1 text-slate-700">
+                  <MapPin className="w-3 h-3 text-cyan-600" />
+                  Destination Dock
                 </span>
-                <span className="text-[10px] text-cyan-800 bg-white px-1.5 py-0.5 rounded border border-cyan-200 font-mono">
+                <span className="text-slate-700 bg-white px-1.5 py-0.5 rounded border border-slate-200">
                   {deliveryAddress.city || 'Set City'}
                 </span>
               </div>
               <p className="font-bold text-slate-900 text-xs truncate">
                 {deliveryAddress.plantOrUnitName || effectiveCustomer.companyName}
               </p>
-              <p className="text-slate-600 text-[11px] leading-tight">
+              <p className="text-slate-500 text-[11px] leading-tight">
                 {deliveryAddress.streetAddress}, {deliveryAddress.city} {deliveryAddress.postalCode}
               </p>
-              <div className="pt-1 border-t border-cyan-100/60 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+              <div className="pt-1 border-t border-slate-200/60 flex items-center justify-between text-[11px] text-slate-500 font-mono">
                 <span className="truncate">Dock: {deliveryAddress.dockContactPerson}</span>
                 <span className="shrink-0">{deliveryAddress.dockContactPhone}</span>
               </div>
             </div>
 
             {/* Delivery Routing Choice in Ticket */}
-            <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg my-2 text-xs flex items-center justify-between">
+            <div className="p-2.5 bg-slate-50 border border-slate-200/80 rounded-lg my-2 text-xs flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-slate-600 font-medium text-[11px]">
                 <Truck className="w-3.5 h-3.5 text-slate-500" />
                 <span>Routing:</span>
@@ -2409,35 +2483,35 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             <div className="space-y-2 py-4 border-t border-slate-100 text-xs">
               <div className="flex justify-between text-slate-600">
                 <span>Subtotal ({totalKg.toFixed(1)} kg)</span>
-                <span className="font-mono tabular-nums">{pricingConfig.currencySymbol}{subtotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                <span className="font-mono tabular-nums font-semibold text-slate-800">{pricingConfig.currencySymbol}{subtotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
               </div>
 
               {discountPct > 0 && (
-                <div className="flex justify-between text-emerald-600 font-medium">
+                <div className="flex justify-between text-emerald-700 font-medium">
                   <span>Volume Discount ({discountPct}%)</span>
-                  <span className="font-mono tabular-nums">-{pricingConfig.currencySymbol}{discountAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                  <span className="font-mono tabular-nums font-semibold">-{pricingConfig.currencySymbol}{discountAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                 </div>
               )}
 
               <div className="flex justify-between text-slate-600">
                 <span>Industrial GST ({pricingConfig.taxRatePct}% HSN 3215)</span>
-                <span className="font-mono tabular-nums">{pricingConfig.currencySymbol}{taxAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                <span className="font-mono tabular-nums font-semibold text-slate-800">{pricingConfig.currencySymbol}{taxAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
               </div>
 
               <div className="flex justify-between text-slate-600">
                 <span>
                   Transport ({deliveryMethod === 'br_dedicated' ? priority.split(' ')[0] : deliveryMethod === 'customer_pickup' ? 'Self-Pickup' : EXTERNAL_DELIVERY_APPS.find(a => a.id === selectedAppId)?.name.split(' ')[0] || 'App'})
                 </span>
-                <span className={`font-mono tabular-nums ${deliveryMethod !== 'br_dedicated' ? 'text-emerald-700 font-semibold' : ''}`}>
+                <span className={`font-mono tabular-nums ${deliveryMethod !== 'br_dedicated' ? 'text-emerald-700 font-semibold' : 'text-slate-800 font-semibold'}`}>
                   {deliveryMethod === 'br_dedicated' 
-                    ? `${pricingConfig.currencySymbol}${shippingFee.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+                    ? (shippingFee === 0 ? 'FREE (≥300kg)' : `${pricingConfig.currencySymbol}${shippingFee.toLocaleString(undefined, { minimumFractionDigits: 2 })}`)
                     : '₹0.00 (Customer App)'}
                 </span>
               </div>
 
               <div className="flex justify-between text-base font-bold text-slate-900 pt-3 border-t border-slate-200">
                 <span>Total Amount</span>
-                <span className="font-mono tabular-nums text-lg text-slate-900">
+                <span className="font-mono tabular-nums text-lg text-slate-900 font-black">
                   {pricingConfig.currencySymbol}{totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
               </div>
@@ -2446,15 +2520,15 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             {/* Guarantee and terms note */}
             <div className="space-y-1.5 py-3 border-t border-slate-100 text-[11px] text-slate-500">
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Lab QC Certificate & Spectro delta E &lt; 0.8 included</span>
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Lab QC Certificate & Spectro ΔE &lt; 0.8 included</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Truck className="w-3.5 h-3.5 text-slate-400" />
+                <Truck className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 <span>Real-time GPS vehicle tracking upon dispatch</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-slate-400" />
+                <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 <span>Auto-generates commercial tax invoice</span>
               </div>
             </div>
@@ -2463,9 +2537,9 @@ export const OrderIntakeForm: React.FC<OrderIntakeFormProps> = ({
             <button
               type="submit"
               disabled={orderItems.length === 0}
-              className="w-full mt-4 py-3 px-4 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white font-semibold text-xs tracking-wide rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full mt-4 py-3 px-4 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white font-bold text-xs tracking-wide rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Confirm & Issue Order</span>
+              <span>Confirm &amp; Issue Order</span>
               <ArrowRight className="w-4 h-4 text-cyan-400" />
             </button>
           </div>

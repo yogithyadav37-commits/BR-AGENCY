@@ -14,7 +14,9 @@ import {
   Receipt,
   User,
   Phone,
-  Package
+  Package,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { UserRole, CustomerProfile } from '../types/ink';
 
@@ -33,6 +35,8 @@ interface NavbarProps {
   activeCustomer?: CustomerProfile | null;
   onOpenCustomerAuth: () => void;
   onSignOutCustomer: () => void;
+  theme?: 'dark' | 'light';
+  onToggleTheme?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -50,43 +54,30 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeCustomer = null,
   onOpenCustomerAuth,
   onSignOutCustomer,
+  theme = 'dark',
+  onToggleTheme,
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 lg:gap-8 h-16">
-          {/* Zone 1: Brand wordmark & Portal Mode Badge */}
-          <div className="flex items-center gap-3">
-            <div 
-              onClick={() => onSelectTab('order')} 
-              className="flex items-center gap-2.5 cursor-pointer select-none whitespace-nowrap shrink-0 group"
-            >
-              <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-white shadow-xs group-hover:bg-slate-800 transition-colors">
-                <span className="font-black text-cyan-400 text-xs tracking-tighter">BR</span>
-              </div>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-lg font-black tracking-tight text-slate-900">
-                  BR AGENCY
-                </span>
-                <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                  Company Inks
-                </span>
-              </div>
+          {/* Zone 1: Brand wordmark with physical CMYK indicator */}
+          <div 
+            onClick={() => onSelectTab('order')} 
+            className="flex items-center gap-2.5 cursor-pointer select-none whitespace-nowrap shrink-0 group"
+          >
+            <span className="text-xl font-black tracking-tight text-slate-900 group-hover:text-slate-800 transition-colors">
+              BR AGENCY
+            </span>
+            <div className="flex items-center gap-1" title="CMYK Process Inks (ISO 2846-1 / 12647-2)">
+              <span className="w-1.5 h-3 rounded-xs bg-[#0099FF]" />
+              <span className="w-1.5 h-3 rounded-xs bg-[#E6007A]" />
+              <span className="w-1.5 h-3 rounded-xs bg-[#FFD700]" />
+              <span className="w-1.5 h-3 rounded-xs bg-[#111827]" />
             </div>
-
-            {/* Mode Indicator pill */}
-            <div className="hidden xl:flex items-center">
-              {userRole === 'owner' ? (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
-                  <ShieldCheck className="w-3 h-3 text-amber-700" />
-                  <span>Owner Mode Active</span>
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                  <span>Company Ordering View</span>
-                </span>
-              )}
-            </div>
+            <span className="hidden lg:inline text-xs font-semibold text-slate-400 tracking-wider uppercase ml-1">
+              · Inks
+            </span>
           </div>
 
           {/* Zone 2: Navigation Links */}
@@ -135,8 +126,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Send className="w-3.5 h-3.5 text-cyan-600" />
               <span>Request Stock</span>
               {pendingRequestsCount > 0 && (
-                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-cyan-100 text-cyan-800 font-bold">
-                  {pendingRequestsCount}
+                <span className="text-[11px] font-mono text-cyan-700 font-semibold tabular-nums">
+                  ({pendingRequestsCount})
                 </span>
               )}
             </button>
@@ -155,8 +146,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <Boxes className="w-3.5 h-3.5 text-amber-600" />
                 <span>Stock Inventory</span>
                 {lowStockCount > 0 && (
-                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-800 font-bold">
-                    {lowStockCount} low
+                  <span className="text-[11px] font-mono text-amber-700 font-semibold tabular-nums">
+                    ({lowStockCount} low)
                   </span>
                 )}
               </button>
@@ -303,6 +294,23 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <ShieldCheck className="w-3.5 h-3.5 text-amber-700" />
                 <span className="hidden sm:inline">Switch to Customer View</span>
+              </button>
+            )}
+
+            {/* Invert Theme Toggle Button */}
+            {onToggleTheme && (
+              <button
+                type="button"
+                onClick={onToggleTheme}
+                className="inline-flex items-center justify-center p-2 rounded-lg border border-slate-300 text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors shadow-2xs cursor-pointer"
+                title={theme === 'dark' ? 'Invert to Light Theme' : 'Invert to Dark Theme'}
+                aria-label="Invert Theme"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-3.5 h-3.5 text-amber-500" />
+                ) : (
+                  <Moon className="w-3.5 h-3.5 text-slate-600" />
+                )}
               </button>
             )}
 

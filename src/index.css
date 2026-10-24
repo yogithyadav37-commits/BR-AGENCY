@@ -1,1 +1,207 @@
 @import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+/* Inverted / Dark Theme Global Styles */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #090d16 !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark .bg-slate-50 {
+  background-color: #090d16 !important;
+}
+
+html.dark .bg-white {
+  background-color: #121826 !important;
+  color: #f1f5f9;
+}
+
+html.dark .bg-slate-100 {
+  background-color: #1a2234 !important;
+}
+
+html.dark .bg-slate-200 {
+  background-color: #242f46 !important;
+}
+
+html.dark .hover\:bg-slate-50:hover {
+  background-color: #172033 !important;
+}
+
+html.dark .hover\:bg-slate-100:hover {
+  background-color: #1f2a3f !important;
+}
+
+html.dark .hover\:bg-slate-200:hover {
+  background-color: #2a3752 !important;
+}
+
+/* Borders in Dark Theme */
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-slate-200\/80,
+html.dark .border-slate-200\/60,
+html.dark .border-slate-200\/40 {
+  border-color: #1f2b3f !important;
+}
+
+html.dark .border-slate-300,
+html.dark .border-slate-300\/80 {
+  border-color: #2d3b55 !important;
+}
+
+/* Typography in Dark Theme */
+html.dark .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-800 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-600 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-500 {
+  color: #64748b !important;
+}
+
+html.dark .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+/* Form Controls in Dark Theme */
+html.dark input[type="text"],
+html.dark input[type="number"],
+html.dark input[type="tel"],
+html.dark input[type="email"],
+html.dark input[type="password"],
+html.dark select,
+html.dark textarea {
+  background-color: #151d2c !important;
+  border-color: #2d3b55 !important;
+  color: #f8fafc !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+html.dark select option {
+  background-color: #121826 !important;
+  color: #f8fafc !important;
+}
+
+html.dark input[disabled],
+html.dark select[disabled] {
+  background-color: #0f1522 !important;
+  opacity: 0.6;
+}
+
+/* Headers & Navigation */
+html.dark header {
+  background-color: rgba(18, 24, 38, 0.95) !important;
+  border-color: #1f2b3f !important;
+}
+
+html.dark footer {
+  background-color: #0d121f !important;
+  border-color: #1f2b3f !important;
+}
+
+/* Primary Action Buttons in Dark Theme */
+html.dark button.bg-slate-900:not([disabled]) {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+html.dark button.bg-slate-900:not([disabled]):hover {
+  background-color: #0369a1 !important;
+}
+
+/* Tinted Panels & Chips in Dark Theme */
+html.dark .bg-cyan-50,
+html.dark .bg-cyan-50\/50,
+html.dark .bg-cyan-50\/60,
+html.dark .bg-cyan-50\/70,
+html.dark .bg-cyan-50\/80 {
+  background-color: rgba(8, 47, 73, 0.35) !important;
+}
+
+html.dark .border-cyan-100,
+html.dark .border-cyan-200,
+html.dark .border-cyan-300 {
+  border-color: rgba(3, 105, 161, 0.5) !important;
+}
+
+html.dark .text-cyan-700,
+html.dark .text-cyan-800,
+html.dark .text-cyan-900 {
+  color: #38bdf8 !important;
+}
+
+html.dark .bg-amber-50,
+html.dark .bg-amber-50\/50,
+html.dark .bg-amber-50\/80 {
+  background-color: rgba(69, 26, 3, 0.35) !important;
+}
+
+html.dark .border-amber-200,
+html.dark .border-amber-300 {
+  border-color: rgba(180, 83, 9, 0.5) !important;
+}
+
+html.dark .text-amber-700,
+html.dark .text-amber-800,
+html.dark .text-amber-900 {
+  color: #fbbf24 !important;
+}
+
+html.dark .bg-emerald-50,
+html.dark .bg-emerald-50\/60 {
+  background-color: rgba(6, 78, 59, 0.35) !important;
+}
+
+html.dark .border-emerald-200,
+html.dark .border-emerald-300 {
+  border-color: rgba(4, 120, 87, 0.5) !important;
+}
+
+html.dark .text-emerald-700,
+html.dark .text-emerald-800,
+html.dark .text-emerald-900 {
+  color: #34d399 !important;
+}
+
+html.dark .bg-rose-50,
+html.dark .bg-rose-50\/20,
+html.dark .bg-rose-50\/80 {
+  background-color: rgba(76, 5, 25, 0.35) !important;
+}
+
+html.dark .border-rose-200 {
+  border-color: rgba(190, 18, 60, 0.5) !important;
+}
+
+html.dark .text-rose-700,
+html.dark .text-rose-800,
+html.dark .text-rose-900 {
+  color: #fb7185 !important;
+}
+
+/* Modals & Overlays */
+html.dark .bg-black\/50,
+html.dark .bg-slate-900\/60 {
+  background-color: rgba(3, 7, 18, 0.8) !important;
+}

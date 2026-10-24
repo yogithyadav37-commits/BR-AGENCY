@@ -140,7 +140,7 @@ export const RequestStockView: React.FC<RequestStockViewProps> = ({
           </h1>
           <p className="mt-1 text-sm text-slate-600 max-w-3xl">
             {userRole === 'owner' 
-              ? 'Review inquiries from printing presses that require more stock than current warehouse inventory. Allocate 3-roll milling schedules and notify clients.'
+              ? 'Review inquiries from companies that require more stock than current warehouse inventory. Allocate 3-roll milling schedules and notify clients.'
               : 'Need more quantity than currently available in warehouse stock? Submit a priority request directly to BR Agency production engineers for custom batch milling.'}
           </p>
         </div>
