@@ -17,6 +17,16 @@ import { PriceSettingsModal } from './components/PriceSettingsModal';
 import { MonthlySalesView } from './components/MonthlySalesView';
 import { CustomerAuthModal } from './components/CustomerAuthModal';
 import { CustomerPortalView } from './components/CustomerPortalView';
+import { PressroomLocatorModal } from './components/PressroomLocatorModal';
+import { 
+  auth, 
+  googleProvider, 
+  signInWithPopup, 
+  signOut, 
+  onAuthStateChanged,
+  FirebaseUser 
+} from './firebase';
+import { FirestoreService } from './services/firestoreService';
 import { Phone } from 'lucide-react';
 import { 
   INITIAL_ORDERS, 
@@ -103,6 +113,11 @@ export default function App() {
 
   // Price Settings Modal State
   const [isPriceSettingsOpen, setIsPriceSettingsOpen] = useState(false);
+
+  // Firebase Auth State & Omni / Maps Modal Controls
+  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [isMapsLocatorOpen, setIsMapsLocatorOpen] = useState(false);
 
   // Customer Auth & Persistent Device Session (Starts clean with 0 demo accounts)
   const [customers, setCustomers] = useState<CustomerProfile[]>(() => {
@@ -311,6 +326,62 @@ export default function App() {
     }
   }, [customers]);
 
+  // Firebase Auth listener and Firestore real-time synchronization
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      setFirebaseUser(user);
+      if (user) {
+        FirestoreService.saveUserProfile(user.uid, {
+          email: user.email || '',
+          displayName: user.displayName || 'Authorized User',
+          photoURL: user.photoURL || ''
+        });
+      }
+    });
+
+    // Real-time Firestore sync
+    const unsubscribeOrders = FirestoreService.subscribeOrders((firestoreOrders) => {
+      if (firestoreOrders && firestoreOrders.length > 0) {
+        setOrders(firestoreOrders);
+      }
+    });
+
+    const unsubscribeInvoices = FirestoreService.subscribeInvoices((firestoreInvoices) => {
+      if (firestoreInvoices && firestoreInvoices.length > 0) {
+        setInvoices(firestoreInvoices);
+      }
+    });
+
+    const unsubscribeStockRequests = FirestoreService.subscribeStockRequests((requests) => {
+      if (requests && requests.length > 0) {
+        setStockRequests(requests);
+      }
+    });
+
+    return () => {
+      unsubscribeAuth();
+      unsubscribeOrders();
+      unsubscribeInvoices();
+      unsubscribeStockRequests();
+    };
+  }, []);
+
+  const handleSignInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error('Google Sign-In failed:', error);
+    }
+  };
+
+  const handleSignOutGoogle = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Sign out failed:', error);
+    }
+  };
+
   // Customer Auth Handlers
   const handleLoginCustomer = (customer: CustomerProfile) => {
     setActiveCustomer(customer);
@@ -350,6 +421,10 @@ export default function App() {
     setInvoices(prev => [newInvoice, ...prev]);
     setSelectedOrderId(newOrder.id);
 
+    // Persist to Cloud Firestore
+    FirestoreService.saveOrder(newOrder);
+    FirestoreService.saveInvoice(newInvoice);
+
     // Deduct ordered items from live warehouse stock
     setStockInventory(prevStock => {
       return prevStock.map(stock => {
@@ -371,6 +446,7 @@ export default function App() {
   // Handler: Stock Requests
   const handleSubmitStockRequest = (newRequest: StockRequest) => {
     setStockRequests(prev => [newRequest, ...prev]);
+    FirestoreService.saveStockRequest(newRequest);
   };
 
   const handleUpdateStockRequestStatus = (
@@ -758,6 +834,10 @@ export default function App() {
         onSignOutCustomer={handleSignOutCustomer}
         theme={theme}
         onToggleTheme={handleToggleTheme}
+        firebaseUser={firebaseUser}
+        onSignInWithGoogle={handleSignInWithGoogle}
+        onSignOutGoogle={handleSignOutGoogle}
+        onOpenMapsLocator={() => setIsMapsLocatorOpen(true)}
       />
 
       {/* Main Content Workspace */}
@@ -916,6 +996,8 @@ export default function App() {
             userRole={userRole}
           />
         )}
+
+
       </main>
 
       {/* Customer Mobile Phone + OTP Authentication Modal */}
@@ -946,6 +1028,12 @@ export default function App() {
         onClose={() => setIsPriceSettingsOpen(false)}
         currentPricing={pricingConfig}
         onSavePricing={handleSavePricing}
+      />
+
+      {/* Pressroom & Packaging Facility Locator (Gemini 3.8 Flash Maps Grounding) */}
+      <PressroomLocatorModal
+        isOpen={isMapsLocatorOpen}
+        onClose={() => setIsMapsLocatorOpen(false)}
       />
 
       {/* Clean Editorial Footer */}
